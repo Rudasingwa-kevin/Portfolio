@@ -1,0 +1,367 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import BootScreen from "@/components/BootScreen";
+import Window from "@/components/Window";
+import DesktopIcon from "@/components/DesktopIcon";
+import AboutWindow from "@/components/AboutWindow";
+import ProjectsWindow from "@/components/ProjectsWindow";
+import SkillsWindow from "@/components/SkillsWindow";
+import TerminalWindow from "@/components/TerminalWindow";
+import AchievementsWindow from "@/components/AchievementsWindow";
+import ContactWindow from "@/components/ContactWindow";
+import ThemeToggle from "@/components/ThemeToggle";
+
+type WindowId =
+  | "about"
+  | "projects"
+  | "skills"
+  | "terminal"
+  | "achievements"
+  | "contact";
+
+interface WindowState {
+  id: WindowId;
+  isOpen: boolean;
+  isMinimized: boolean;
+  zIndex: number;
+  icon: string;
+  title: string;
+}
+
+const initialWindows: WindowState[] = [
+  { id: "about", isOpen: false, isMinimized: false, zIndex: 10, icon: "👤", title: "About Me" },
+  { id: "projects", isOpen: false, isMinimized: false, zIndex: 11, icon: "📦", title: "Projects" },
+  { id: "skills", isOpen: false, isMinimized: false, zIndex: 12, icon: "🧩", title: "Skills" },
+  { id: "terminal", isOpen: false, isMinimized: false, zIndex: 13, icon: "💻", title: "Terminal" },
+  { id: "achievements", isOpen: false, isMinimized: false, zIndex: 14, icon: "🏅", title: "Achievements" },
+  { id: "contact", isOpen: false, isMinimized: false, zIndex: 15, icon: "📬", title: "Contact" },
+];
+
+const desktopIcons: { id: WindowId | "cv"; icon: string; label: string }[] = [
+  { id: "about", icon: "👤", label: "About Me" },
+  { id: "projects", icon: "📦", label: "Projects" },
+  { id: "skills", icon: "🧩", label: "Skills" },
+  { id: "terminal", icon: "💻", label: "Terminal" },
+  { id: "achievements", icon: "🏅", label: "Achievements" },
+  { id: "contact", icon: "📬", label: "Contact" },
+  { id: "cv", icon: "📄", label: "Download CV" },
+];
+
+export default function HomePage() {
+  const [booted, setBooted] = useState(false);
+  const [windows, setWindows] = useState<WindowState[]>(initialWindows);
+  const [highestZ, setHighestZ] = useState(20);
+  const [isLight, setIsLight] = useState(false);
+  const [time, setTime] = useState("");
+  const [konamiProgress, setKonamiProgress] = useState(0);
+  const [showSecret, setShowSecret] = useState(false);
+
+  const konamiCode = [
+    "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+    "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
+    "b", "a",
+  ];
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(
+        now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })
+      );
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === konamiCode[konamiProgress]) {
+        const next = konamiProgress + 1;
+        if (next === konamiCode.length) {
+          setShowSecret(true);
+          setKonamiProgress(0);
+        } else {
+          setKonamiProgress(next);
+        }
+      } else {
+        setKonamiProgress(0);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [konamiProgress]);
+
+  const openWindow = useCallback(
+    (id: WindowId) => {
+      setHighestZ((z) => z + 1);
+      setWindows((prev) =>
+        prev.map((w) =>
+          w.id === id
+            ? { ...w, isOpen: true, isMinimized: false, zIndex: highestZ }
+            : w
+        )
+      );
+    },
+    [highestZ]
+  );
+
+  const closeWindow = useCallback((id: WindowId) => {
+    setWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, isOpen: false } : w))
+    );
+  }, []);
+
+  const minimizeWindow = useCallback((id: WindowId) => {
+    setWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w))
+    );
+  }, []);
+
+  const focusWindow = useCallback(
+    (id: WindowId) => {
+      setHighestZ((z) => z + 1);
+      setWindows((prev) =>
+        prev.map((w) =>
+          w.id === id ? { ...w, zIndex: highestZ } : w
+        )
+      );
+    },
+    [highestZ]
+  );
+
+  const handleDesktopIcon = useCallback(
+    (id: WindowId | "cv") => {
+      if (id === "cv") {
+        // Trigger CV download
+        const link = document.createElement("a");
+        link.href = "#";
+        link.download = "Ishimwe_Kevin_CV.pdf";
+        link.click();
+        return;
+      }
+      const win = windows.find((w) => w.id === id);
+      if (win?.isOpen && !win.isMinimized) {
+        minimizeWindow(id);
+      } else {
+        openWindow(id);
+      }
+    },
+    [windows, openWindow, minimizeWindow]
+  );
+
+  const handleTerminalNavigate = useCallback(
+    (section: string) => {
+      if (section === "exit") {
+        closeWindow("terminal");
+      } else if (section === "about" || section === "projects" || section === "skills" || section === "contact" || section === "achievements") {
+        openWindow(section as WindowId);
+      } else if (section === "github") {
+        window.open("https://github.com/ishimwekevin", "_blank");
+      }
+    },
+    [openWindow, closeWindow]
+  );
+
+  const handleOpenProject = useCallback(
+    (name: string) => {
+      openWindow("projects");
+    },
+    [openWindow]
+  );
+
+  const toggleTheme = useCallback(() => {
+    setIsLight((prev) => {
+      const next = !prev;
+      if (next) {
+        document.documentElement.classList.add("light-mode");
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.remove("light-mode");
+        document.documentElement.classList.add("dark");
+      }
+      return next;
+    });
+  }, []);
+
+  const getPositions = (index: number) => {
+    const baseX = 60 + (index % 3) * 250;
+    const baseY = 40 + Math.floor(index / 3) * 220;
+    return { x: baseX, y: baseY };
+  };
+
+  return (
+    <>
+      <AnimatePresence>
+        {!booted && <BootScreen onComplete={() => setBooted(true)} />}
+      </AnimatePresence>
+
+      {booted && (
+        <motion.div
+          className="w-full h-screen relative overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Desktop Background */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: isLight
+                ? "linear-gradient(135deg, #e0e7ff 0%, #f0f9ff 50%, #ede9fe 100%)"
+                : "radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 50%), #0a0a0f",
+            }}
+          />
+
+          {/* Taskbar */}
+          <div
+            className={`absolute bottom-0 left-0 right-0 h-12 flex items-center px-4 gap-2 z-[50] border-t ${
+              isLight
+                ? "bg-light-glass border-light-border"
+                : "bg-kevin-glass border-kevin-border"
+            }`}
+            style={{ backdropFilter: "blur(20px)" }}
+          >
+            <div className="flex items-center gap-1">
+              <span className="text-lg mr-2">🖥️</span>
+              <span className="text-xs font-bold text-kevin-accent font-mono hidden sm:inline">
+                KevinOS
+              </span>
+            </div>
+
+            <div className="flex-1 flex items-center justify-center gap-1 overflow-x-auto">
+              {windows
+                .filter((w) => w.isOpen)
+                .map((w) => (
+                  <motion.button
+                    key={w.id}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-colors ${
+                      !w.isMinimized
+                        ? isLight
+                          ? "bg-kevin-accent/10 border border-kevin-accent/30 text-kevin-accent"
+                          : "bg-kevin-accent/10 border border-kevin-accent/30 text-kevin-accent"
+                        : isLight
+                        ? "bg-light-card border border-light-border text-light-text2 hover:border-kevin-accent"
+                        : "bg-kevin-card border border-kevin-border text-kevin-text2 hover:border-kevin-accent"
+                    }`}
+                    onClick={() => {
+                      if (w.isMinimized) {
+                        openWindow(w.id);
+                      } else {
+                        focusWindow(w.id);
+                      }
+                    }}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                  >
+                    <span>{w.icon}</span>
+                    <span className="hidden sm:inline">{w.title}</span>
+                  </motion.button>
+                ))}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-kevin-text2">{time}</span>
+            </div>
+          </div>
+
+          {/* Desktop Icons */}
+          <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
+            <div className="flex flex-wrap gap-1" style={{ maxWidth: "calc(100vw - 100px)" }}>
+              {desktopIcons.map((icon, index) => (
+                <DesktopIcon
+                  key={icon.id}
+                  icon={icon.icon}
+                  label={icon.label}
+                  onClick={() => handleDesktopIcon(icon.id)}
+                  index={index}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Windows */}
+          <AnimatePresence>
+            {windows.map((win, index) => (
+              <Window
+                key={win.id}
+                title={win.title}
+                icon={win.icon}
+                isOpen={win.isOpen && !win.isMinimized}
+                onClose={() => closeWindow(win.id)}
+                onMinimize={() => minimizeWindow(win.id)}
+                initialPosition={getPositions(index)}
+                width={win.id === "terminal" ? 650 : 700}
+                height={win.id === "terminal" ? 450 : 520}
+                zIndex={win.zIndex}
+                onFocus={() => focusWindow(win.id)}
+              >
+                {win.id === "about" && <AboutWindow isLight={isLight} />}
+                {win.id === "projects" && (
+                  <ProjectsWindow isLight={isLight} onOpenProject={handleOpenProject} />
+                )}
+                {win.id === "skills" && <SkillsWindow isLight={isLight} />}
+                {win.id === "terminal" && (
+                  <TerminalWindow
+                    isLight={isLight}
+                    onNavigate={handleTerminalNavigate}
+                    onOpenProject={handleOpenProject}
+                  />
+                )}
+                {win.id === "achievements" && <AchievementsWindow isLight={isLight} />}
+                {win.id === "contact" && <ContactWindow isLight={isLight} />}
+              </Window>
+            ))}
+          </AnimatePresence>
+
+          {/* Secret Easter Egg */}
+          <AnimatePresence>
+            {showSecret && (
+              <motion.div
+                className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowSecret(false)}
+              >
+                <motion.div
+                  className="glass-panel glow-purple p-8 max-w-md text-center"
+                  initial={{ scale: 0.5, rotate: -10 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  exit={{ scale: 0.5, rotate: 10 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="text-6xl mb-4">🎮</div>
+                  <h2 className="text-xl font-bold text-gradient mb-2">
+                    Konami Code Activated!
+                  </h2>
+                  <p className="text-sm text-kevin-text2">
+                    You found the secret! You&apos;re a true explorer of KevinOS.
+                    This Easter egg was placed for those who know the classic code:
+                    ↑↑↓↓←→←→BA
+                  </p>
+                  <button
+                    className="mt-4 px-4 py-2 rounded-lg bg-kevin-accent text-white text-sm font-bold hover:bg-kevin-accent/80 transition-colors"
+                    onClick={() => setShowSecret(false)}
+                  >
+                    Close
+                  </button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <ThemeToggle isLight={isLight} onToggle={toggleTheme} />
+
+          <div className="scanline" />
+        </motion.div>
+      )}
+    </>
+  );
+}

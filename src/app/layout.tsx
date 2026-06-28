@@ -1,0 +1,43 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "KevinOS | Ishimwe Kevin - Software Engineer",
+  description:
+    "Interactive digital workspace of Ishimwe Kevin, a software engineer. Explore projects, skills, and experience in an immersive OS-style interface.",
+  keywords: [
+    "Ishimwe Kevin",
+    "software engineer",
+    "portfolio",
+    "full-stack developer",
+    "Genzura",
+    "Gisenyi.top",
+    "KevinOS",
+  ],
+  authors: [{ name: "Ishimwe Kevin" }],
+  openGraph: {
+    title: "KevinOS | Ishimwe Kevin - Software Engineer",
+    description:
+      "Interactive digital workspace of Ishimwe Kevin. Explore projects, skills, and experience.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KevinOS | Ishimwe Kevin",
+    description:
+      "Interactive digital workspace of Ishimwe Kevin.",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className="dark">
+      <body className="antialiased">{children}</body>
+    </html>
+  );
+}
