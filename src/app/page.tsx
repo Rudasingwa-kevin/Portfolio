@@ -12,6 +12,7 @@ import TerminalWindow from "@/components/TerminalWindow";
 import AchievementsWindow from "@/components/AchievementsWindow";
 import ContactWindow from "@/components/ContactWindow";
 import ThemeToggle from "@/components/ThemeToggle";
+import DesktopWidget from "@/components/DesktopWidget";
 
 type WindowId =
   | "about"
@@ -218,37 +219,80 @@ export default function HomePage() {
                 : "radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 50%), #0a0a0f",
             }}
           />
+          {/* Grid pattern overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: isLight
+                ? "radial-gradient(circle, #cbd5e1 0.5px, transparent 0.5px)"
+                : "radial-gradient(circle, rgba(59,130,246,0.07) 1px, transparent 1px)",
+              backgroundSize: "32px 32px",
+            }}
+          />
+          {/* Corner accent glows */}
+          <div
+            className="absolute top-0 left-0 w-96 h-96 pointer-events-none"
+            style={{
+              background: isLight
+                ? "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)"
+                : "radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)",
+            }}
+          />
+          <div
+            className="absolute bottom-12 right-0 w-80 h-80 pointer-events-none"
+            style={{
+              background: isLight
+                ? "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)"
+                : "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
+            }}
+          />
 
           {/* Taskbar */}
           <div
-            className={`absolute bottom-0 left-0 right-0 h-12 flex items-center px-4 gap-2 z-[50] border-t ${
+            className={`absolute bottom-0 left-0 right-0 h-14 flex items-center px-3 sm:px-5 gap-3 z-[50] border-t ${
               isLight
                 ? "bg-light-glass border-light-border"
                 : "bg-kevin-glass border-kevin-border"
             }`}
-            style={{ backdropFilter: "blur(20px)" }}
+            style={{ backdropFilter: "blur(24px)" }}
           >
-            <div className="flex items-center gap-1">
-              <span className="text-lg mr-2">🖥️</span>
+            {/* Left: KevinOS logo */}
+            <motion.button
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-white/5 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-kevin-accent to-kevin-accent2 flex items-center justify-center text-white text-xs font-bold">
+                K
+              </div>
               <span className="text-xs font-bold text-kevin-accent font-mono hidden sm:inline">
                 KevinOS
               </span>
-            </div>
+            </motion.button>
 
-            <div className="flex-1 flex items-center justify-center gap-1 overflow-x-auto">
+            {/* Separator */}
+            <div
+              className="w-px h-6 hidden sm:block"
+              style={{
+                background: isLight
+                  ? "rgba(148,163,184,0.3)"
+                  : "rgba(59,130,246,0.2)",
+              }}
+            />
+
+            {/* Center: Open windows */}
+            <div className="flex-1 flex items-center justify-center gap-1.5 overflow-x-auto px-2">
               {windows
                 .filter((w) => w.isOpen)
                 .map((w) => (
                   <motion.button
                     key={w.id}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-colors ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all ${
                       !w.isMinimized
-                        ? isLight
-                          ? "bg-kevin-accent/10 border border-kevin-accent/30 text-kevin-accent"
-                          : "bg-kevin-accent/10 border border-kevin-accent/30 text-kevin-accent"
+                        ? "bg-kevin-accent/15 border border-kevin-accent/30 text-kevin-accent shadow-[0_0_10px_rgba(59,130,246,0.1)]"
                         : isLight
-                        ? "bg-light-card border border-light-border text-light-text2 hover:border-kevin-accent"
-                        : "bg-kevin-card border border-kevin-border text-kevin-text2 hover:border-kevin-accent"
+                        ? "bg-light-card/50 border border-light-border text-light-text2 hover:border-kevin-accent/50 hover:text-kevin-accent"
+                        : "bg-kevin-card/50 border border-kevin-border text-kevin-text2 hover:border-kevin-accent/50 hover:text-kevin-accent"
                     }`}
                     onClick={() => {
                       if (w.isMinimized) {
@@ -257,17 +301,54 @@ export default function HomePage() {
                         focusWindow(w.id);
                       }
                     }}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ y: -1 }}
                   >
-                    <span>{w.icon}</span>
-                    <span className="hidden sm:inline">{w.title}</span>
+                    <span className="text-sm">{w.icon}</span>
+                    <span className="hidden sm:inline font-medium">{w.title}</span>
                   </motion.button>
                 ))}
+              {windows.filter((w) => w.isOpen).length === 0 && (
+                <span
+                  className={`text-[11px] font-mono ${
+                    isLight ? "text-light-text2/50" : "text-kevin-text2/30"
+                  }`}
+                >
+                  Click an icon to open an application
+                </span>
+              )}
             </div>
 
+            {/* Separator */}
+            <div
+              className="w-px h-6 hidden sm:block"
+              style={{
+                background: isLight
+                  ? "rgba(148,163,184,0.3)"
+                  : "rgba(59,130,246,0.2)",
+              }}
+            />
+
+            {/* Right: Status + Clock */}
             <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-kevin-text2">{time}</span>
+              <div className="hidden sm:flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-kevin-success animate-pulse" />
+                <span className="text-[10px] font-mono text-kevin-success">
+                  ONLINE
+                </span>
+              </div>
+              <div className="text-right">
+                <div className="text-xs font-mono text-kevin-text font-medium">
+                  {time}
+                </div>
+                <div className="text-[9px] font-mono text-kevin-text2 hidden sm:block">
+                  {new Date().toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -285,6 +366,9 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+
+          {/* Center Widget */}
+          <DesktopWidget isLight={isLight} />
 
           {/* Windows */}
           <AnimatePresence>
