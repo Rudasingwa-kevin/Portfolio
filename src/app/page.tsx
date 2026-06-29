@@ -22,6 +22,7 @@ import AchievementsWindow from "@/components/AchievementsWindow";
 import ContactWindow from "@/components/ContactWindow";
 import ThemeToggle from "@/components/ThemeToggle";
 import DesktopWidget from "@/components/DesktopWidget";
+import ParticleBackground from "@/components/ParticleBackground";
 
 type WindowId =
   | "about"
@@ -360,6 +361,9 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          {/* Particle Background */}
+          <ParticleBackground />
 
           {/* Desktop Icons */}
           <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
