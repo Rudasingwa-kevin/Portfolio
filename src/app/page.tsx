@@ -20,7 +20,6 @@ import SkillsWindow from "@/components/SkillsWindow";
 import TerminalWindow from "@/components/TerminalWindow";
 import AchievementsWindow from "@/components/AchievementsWindow";
 import ContactWindow from "@/components/ContactWindow";
-import ThemeToggle from "@/components/ThemeToggle";
 import DesktopWidget from "@/components/DesktopWidget";
 import ParticleBackground from "@/components/ParticleBackground";
 
@@ -64,7 +63,6 @@ export default function HomePage() {
   const [booted, setBooted] = useState(false);
   const [windows, setWindows] = useState<WindowState[]>(initialWindows);
   const [highestZ, setHighestZ] = useState(20);
-  const [isLight, setIsLight] = useState(false);
   const [time, setTime] = useState("");
   const [konamiProgress, setKonamiProgress] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
@@ -187,20 +185,6 @@ export default function HomePage() {
     [openWindow]
   );
 
-  const toggleTheme = useCallback(() => {
-    setIsLight((prev) => {
-      const next = !prev;
-      if (next) {
-        document.documentElement.classList.add("light-mode");
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.remove("light-mode");
-        document.documentElement.classList.add("dark");
-      }
-      return next;
-    });
-  }, []);
-
   const getPositions = (index: number) => {
     const baseX = 60 + (index % 3) * 250;
     const baseY = 40 + Math.floor(index / 3) * 220;
@@ -224,18 +208,14 @@ export default function HomePage() {
           <div
             className="absolute inset-0"
             style={{
-              background: isLight
-                ? "linear-gradient(135deg, #e0e7ff 0%, #f0f9ff 50%, #ede9fe 100%)"
-                : "radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 50%), #0a0a0f",
+              background: "radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 50%), #0a0a0f",
             }}
           />
           {/* Grid pattern overlay */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              backgroundImage: isLight
-                ? "radial-gradient(circle, #cbd5e1 0.5px, transparent 0.5px)"
-                : "radial-gradient(circle, rgba(59,130,246,0.07) 1px, transparent 1px)",
+              backgroundImage: "radial-gradient(circle, rgba(59,130,246,0.07) 1px, transparent 1px)",
               backgroundSize: "32px 32px",
             }}
           />
@@ -243,27 +223,19 @@ export default function HomePage() {
           <div
             className="absolute top-0 left-0 w-96 h-96 pointer-events-none"
             style={{
-              background: isLight
-                ? "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)"
-                : "radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)",
             }}
           />
           <div
             className="absolute bottom-12 right-0 w-80 h-80 pointer-events-none"
             style={{
-              background: isLight
-                ? "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)"
-                : "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
             }}
           />
 
           {/* Taskbar */}
           <div
-            className={`absolute bottom-0 left-0 right-0 h-14 flex items-center px-3 sm:px-5 gap-3 z-[50] border-t ${
-              isLight
-                ? "bg-light-glass border-light-border"
-                : "bg-kevin-glass border-kevin-border"
-            }`}
+            className="absolute bottom-0 left-0 right-0 h-14 flex items-center px-3 sm:px-5 gap-3 z-[50] border-t bg-kevin-glass border-kevin-border"
             style={{ backdropFilter: "blur(24px)" }}
           >
             {/* Left: KevinOS logo */}
@@ -284,9 +256,7 @@ export default function HomePage() {
             <div
               className="w-px h-6 hidden sm:block"
               style={{
-                background: isLight
-                  ? "rgba(148,163,184,0.3)"
-                  : "rgba(59,130,246,0.2)",
+                background: "rgba(59,130,246,0.2)",
               }}
             />
 
@@ -300,8 +270,6 @@ export default function HomePage() {
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all ${
                       !w.isMinimized
                         ? "bg-kevin-accent/15 border border-kevin-accent/30 text-kevin-accent shadow-[0_0_10px_rgba(59,130,246,0.1)]"
-                        : isLight
-                        ? "bg-light-card/50 border border-light-border text-light-text2 hover:border-kevin-accent/50 hover:text-kevin-accent"
                         : "bg-kevin-card/50 border border-kevin-border text-kevin-text2 hover:border-kevin-accent/50 hover:text-kevin-accent"
                     }`}
                     onClick={() => {
@@ -320,11 +288,7 @@ export default function HomePage() {
                   </motion.button>
                 ))}
               {windows.filter((w) => w.isOpen).length === 0 && (
-                <span
-                  className={`text-[11px] font-mono ${
-                    isLight ? "text-light-text2/50" : "text-kevin-text2/30"
-                  }`}
-                >
+                <span className="text-[11px] font-mono text-kevin-text2/30">
                   Click an icon to open an application
                 </span>
               )}
@@ -334,9 +298,7 @@ export default function HomePage() {
             <div
               className="w-px h-6 hidden sm:block"
               style={{
-                background: isLight
-                  ? "rgba(148,163,184,0.3)"
-                  : "rgba(59,130,246,0.2)",
+                background: "rgba(59,130,246,0.2)",
               }}
             />
 
@@ -381,7 +343,7 @@ export default function HomePage() {
           </div>
 
           {/* Center Widget */}
-          <DesktopWidget isLight={isLight} />
+          <DesktopWidget />
 
           {/* Windows */}
           <AnimatePresence>
@@ -399,20 +361,19 @@ export default function HomePage() {
                 zIndex={win.zIndex}
                 onFocus={() => focusWindow(win.id)}
               >
-                {win.id === "about" && <AboutWindow isLight={isLight} />}
+                {win.id === "about" && <AboutWindow />}
                 {win.id === "projects" && (
-                  <ProjectsWindow isLight={isLight} onOpenProject={handleOpenProject} />
+                  <ProjectsWindow onOpenProject={handleOpenProject} />
                 )}
-                {win.id === "skills" && <SkillsWindow isLight={isLight} />}
+                {win.id === "skills" && <SkillsWindow />}
                 {win.id === "terminal" && (
                   <TerminalWindow
-                    isLight={isLight}
                     onNavigate={handleTerminalNavigate}
                     onOpenProject={handleOpenProject}
                   />
                 )}
-                {win.id === "achievements" && <AchievementsWindow isLight={isLight} />}
-                {win.id === "contact" && <ContactWindow isLight={isLight} />}
+                {win.id === "achievements" && <AchievementsWindow />}
+                {win.id === "contact" && <ContactWindow />}
               </Window>
             ))}
           </AnimatePresence>
@@ -453,8 +414,6 @@ export default function HomePage() {
               </motion.div>
             )}
           </AnimatePresence>
-
-          <ThemeToggle isLight={isLight} onToggle={toggleTheme} />
 
           <div className="scanline" />
         </motion.div>

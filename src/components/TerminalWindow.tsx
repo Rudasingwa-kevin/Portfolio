@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect, useCallback } from "react";
 
 interface TerminalWindowProps {
-  isLight: boolean;
   onNavigate?: (section: string) => void;
   onOpenProject?: (name: string) => void;
 }
@@ -59,7 +58,6 @@ Available commands:
 };
 
 export default function TerminalWindow({
-  isLight,
   onNavigate,
   onOpenProject,
 }: TerminalWindowProps) {
@@ -171,7 +169,7 @@ export default function TerminalWindow({
     >
       <div className="flex-1 overflow-auto p-1 space-y-0.5">
         {history.map((line, i) => (
-          <div key={i} className={line.startsWith("kevin@kevinos") ? "text-kevin-accent" : isLight ? "text-light-text" : "text-kevin-text"}>
+          <div key={i} className={line.startsWith("kevin@kevinos") ? "text-kevin-accent" : "text-kevin-text"}>
             {line}
           </div>
         ))}
@@ -188,9 +186,7 @@ export default function TerminalWindow({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className={`flex-1 bg-transparent outline-none ${
-            isLight ? "text-light-text" : "text-kevin-text"
-          } font-mono text-sm caret-kevin-accent`}
+          className="flex-1 bg-transparent outline-none text-kevin-text font-mono text-sm caret-kevin-accent"
           autoFocus
           spellCheck={false}
           autoComplete="off"

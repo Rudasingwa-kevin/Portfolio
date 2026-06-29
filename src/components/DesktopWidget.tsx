@@ -3,11 +3,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
-interface DesktopWidgetProps {
-  isLight: boolean;
-}
-
-export default function DesktopWidget({ isLight }: DesktopWidgetProps) {
+export default function DesktopWidget() {
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [greeting, setGreeting] = useState("");
@@ -53,9 +49,7 @@ export default function DesktopWidget({ isLight }: DesktopWidgetProps) {
         <motion.div
           className="text-7xl sm:text-8xl font-light tracking-tighter"
           style={{
-            background: isLight
-              ? "linear-gradient(135deg, #1e293b 0%, #334155 100%)"
-              : "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 100%)",
+            background: "linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}
@@ -64,11 +58,7 @@ export default function DesktopWidget({ isLight }: DesktopWidgetProps) {
         </motion.div>
 
         {/* Date */}
-        <div
-          className={`text-sm sm:text-base mt-2 tracking-wide ${
-            isLight ? "text-light-text2" : "text-kevin-text2"
-          }`}
-        >
+        <div className="text-sm sm:text-base mt-2 tracking-wide text-kevin-text2">
           {date}
         </div>
 
@@ -77,9 +67,7 @@ export default function DesktopWidget({ isLight }: DesktopWidgetProps) {
           className="mx-auto mt-5 mb-4 h-px"
           style={{
             width: "120px",
-            background: isLight
-              ? "linear-gradient(90deg, transparent, #94a3b8, transparent)"
-              : "linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent)",
           }}
           initial={{ width: 0 }}
           animate={{ width: 120 }}
@@ -87,21 +75,13 @@ export default function DesktopWidget({ isLight }: DesktopWidgetProps) {
         />
 
         {/* Greeting + Name */}
-        <div
-          className={`text-xs sm:text-sm tracking-widest uppercase ${
-            isLight ? "text-light-text2" : "text-kevin-text2"
-          }`}
-        >
+        <div className="text-xs sm:text-sm tracking-widest uppercase text-kevin-text2">
           {greeting}, Visitor
         </div>
         <div className="text-lg sm:text-xl font-semibold mt-1 text-gradient">
           Welcome to KevinOS
         </div>
-        <div
-          className={`text-xs mt-2 font-mono ${
-            isLight ? "text-light-text2" : "text-kevin-text2"
-          }`}
-        >
+        <div className="text-xs mt-2 font-mono text-kevin-text2">
           Ishimwe Kevin &mdash; Software Engineer
         </div>
 
@@ -122,11 +102,7 @@ export default function DesktopWidget({ isLight }: DesktopWidgetProps) {
               <div className="text-[10px] font-mono text-kevin-accent tracking-wider">
                 {stat.label}
               </div>
-              <div
-                className={`text-sm font-bold mt-0.5 ${
-                  isLight ? "text-light-text" : "text-kevin-text"
-                }`}
-              >
+              <div className="text-sm font-bold mt-0.5 text-kevin-text">
                 {stat.value}
               </div>
             </motion.div>

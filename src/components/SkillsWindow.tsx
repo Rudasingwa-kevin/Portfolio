@@ -2,10 +2,6 @@
 
 import { motion } from "framer-motion";
 
-interface SkillsWindowProps {
-  isLight: boolean;
-}
-
 const engines = [
   {
     name: "Frontend Engine",
@@ -65,7 +61,7 @@ const engines = [
   },
 ];
 
-export default function SkillsWindow({ isLight }: SkillsWindowProps) {
+export default function SkillsWindow() {
   return (
     <div className="space-y-5">
       <div className="flex items-center gap-2">
@@ -79,9 +75,7 @@ export default function SkillsWindow({ isLight }: SkillsWindowProps) {
         {engines.map((engine, i) => (
           <motion.div
             key={engine.name}
-            className={`rounded-xl border ${
-              isLight ? "border-light-border bg-light-card" : "border-kevin-border bg-kevin-card"
-            } p-4`}
+            className="rounded-xl border border-kevin-border bg-kevin-card p-4"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.1 }}
@@ -105,12 +99,12 @@ export default function SkillsWindow({ isLight }: SkillsWindowProps) {
               {engine.skills.map((skill) => (
                 <div key={skill.name}>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className={`${isLight ? "text-light-text" : "text-kevin-text"}`}>
+                    <span className="text-kevin-text">
                       {skill.name}
                     </span>
                     <span className="text-kevin-text2 font-mono">{skill.level}%</span>
                   </div>
-                  <div className={`w-full h-1.5 rounded-full ${isLight ? "bg-light-border" : "bg-kevin-border"}`}>
+                  <div className="w-full h-1.5 rounded-full bg-kevin-border">
                     <motion.div
                       className={`h-full rounded-full bg-gradient-to-r ${engine.color.replace("text-", "from-")}`}
                       initial={{ width: 0 }}

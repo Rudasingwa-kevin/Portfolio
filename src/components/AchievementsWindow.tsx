@@ -2,10 +2,6 @@
 
 import { motion } from "framer-motion";
 
-interface AchievementsWindowProps {
-  isLight: boolean;
-}
-
 const badges = [
   {
     icon: "🏆",
@@ -93,7 +89,7 @@ const badges = [
   },
 ];
 
-export default function AchievementsWindow({ isLight }: AchievementsWindowProps) {
+export default function AchievementsWindow() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -114,11 +110,7 @@ export default function AchievementsWindow({ isLight }: AchievementsWindowProps)
             key={badge.title}
             className={`rounded-xl border p-3 ${
               badge.unlocked
-                ? isLight
-                  ? "border-kevin-accent/30 bg-kevin-accent/5"
-                  : "border-kevin-accent/30 bg-kevin-accent/5"
-                : isLight
-                ? "border-light-border bg-light-card opacity-50"
+                ? "border-kevin-accent/30 bg-kevin-accent/5"
                 : "border-kevin-border bg-kevin-card opacity-50"
             }`}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -137,7 +129,7 @@ export default function AchievementsWindow({ isLight }: AchievementsWindowProps)
                     <span className="text-[9px] text-kevin-success font-mono">✓</span>
                   )}
                 </div>
-                <p className={`text-xs mt-0.5 ${isLight ? "text-light-text2" : "text-kevin-text2"}`}>
+                <p className="text-xs mt-0.5 text-kevin-text2">
                   {badge.desc}
                 </p>
                 <span className="text-[10px] text-kevin-accent2 font-mono mt-1 inline-block">

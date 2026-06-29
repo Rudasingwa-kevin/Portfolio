@@ -2,10 +2,6 @@
 
 import { motion } from "framer-motion";
 
-interface AboutWindowProps {
-  isLight: boolean;
-}
-
 const milestones = [
   {
     year: "2020",
@@ -39,7 +35,7 @@ const milestones = [
   },
 ];
 
-export default function AboutWindow({ isLight }: AboutWindowProps) {
+export default function AboutWindow() {
   return (
     <div className="space-y-6">
       <div className="flex items-start gap-4">
@@ -48,10 +44,10 @@ export default function AboutWindow({ isLight }: AboutWindowProps) {
         </div>
         <div>
           <h2 className="text-xl font-bold text-gradient">Ishimwe Kevin</h2>
-          <p className={`${isLight ? "text-light-text2" : "text-kevin-text2"} text-sm mt-1`}>
+          <p className="text-kevin-text2 text-sm mt-1">
             Software Engineer & Digital Architect
           </p>
-          <p className={`${isLight ? "text-light-text" : "text-kevin-text"} text-sm mt-3 leading-relaxed`}>
+          <p className="text-kevin-text text-sm mt-3 leading-relaxed">
             I&apos;m a software engineer who believes in building software that feels alive.
             From writing my first line of code to architecting full-stack systems,
             I&apos;ve been driven by the desire to create technology that makes a real difference.
@@ -84,7 +80,7 @@ export default function AboutWindow({ isLight }: AboutWindowProps) {
               <div className="pb-4">
                 <span className="text-xs font-mono text-kevin-accent2">{m.year}</span>
                 <h4 className="text-sm font-bold text-kevin-text mt-0.5">{m.title}</h4>
-                <p className={`text-xs mt-1 ${isLight ? "text-light-text2" : "text-kevin-text2"} leading-relaxed`}>
+                <p className="text-xs mt-1 text-kevin-text2 leading-relaxed">
                   {m.desc}
                 </p>
               </div>

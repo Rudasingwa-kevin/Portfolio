@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 interface ProjectsWindowProps {
-  isLight: boolean;
   onOpenProject?: (name: string) => void;
 }
 
@@ -35,7 +34,7 @@ const projects = [
   },
 ];
 
-export default function ProjectsWindow({ isLight }: ProjectsWindowProps) {
+export default function ProjectsWindow({ }: ProjectsWindowProps) {
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
 
   return (
@@ -51,9 +50,7 @@ export default function ProjectsWindow({ isLight }: ProjectsWindowProps) {
         {projects.map((project, i) => (
           <motion.div
             key={project.id}
-            className={`rounded-xl border ${
-              isLight ? "border-light-border bg-light-card" : "border-kevin-border bg-kevin-card"
-            } overflow-hidden hover:border-kevin-accent/50 transition-colors`}
+            className={`rounded-xl border border-kevin-border bg-kevin-card overflow-hidden hover:border-kevin-accent/50 transition-colors`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
@@ -66,17 +63,13 @@ export default function ProjectsWindow({ isLight }: ProjectsWindowProps) {
                   <div className="text-2xl">{project.icon}</div>
                   <div>
                     <h3 className="font-bold text-kevin-text">{project.name}</h3>
-                    <p className={`text-xs ${isLight ? "text-light-text2" : "text-kevin-text2"}`}>
+                    <p className="text-xs text-kevin-text2">
                       {project.tagline}
                     </p>
                   </div>
                 </div>
                 <button
-                  className={`text-xs px-2 py-1 rounded border ${
-                    isLight
-                      ? "border-light-border text-light-text2"
-                      : "border-kevin-border text-kevin-text2"
-                  } hover:border-kevin-accent hover:text-kevin-accent transition-colors`}
+                  className={`text-xs px-2 py-1 rounded border border-kevin-border text-kevin-text2 hover:border-kevin-accent hover:text-kevin-accent transition-colors`}
                   onClick={() =>
                     setExpandedProject(
                       expandedProject === project.id ? null : project.id
@@ -94,7 +87,7 @@ export default function ProjectsWindow({ isLight }: ProjectsWindowProps) {
                   transition={{ duration: 0.3 }}
                   className="mt-4 space-y-3"
                 >
-                  <p className={`text-sm ${isLight ? "text-light-text" : "text-kevin-text"} leading-relaxed`}>
+                  <p className="text-sm text-kevin-text leading-relaxed">
                     {project.description}
                   </p>
 
@@ -122,11 +115,7 @@ export default function ProjectsWindow({ isLight }: ProjectsWindowProps) {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`text-xs px-3 py-1.5 rounded-lg border ${
-                        isLight
-                          ? "border-light-border text-light-text"
-                          : "border-kevin-border text-kevin-text"
-                      } hover:border-kevin-accent hover:text-kevin-accent transition-colors font-medium`}
+                      className="text-xs px-3 py-1.5 rounded-lg border border-kevin-border text-kevin-text hover:border-kevin-accent hover:text-kevin-accent transition-colors font-medium"
                     >
                       ⟁ GitHub
                     </a>

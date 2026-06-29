@@ -3,11 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-interface ContactWindowProps {
-  isLight: boolean;
-}
-
-export default function ContactWindow({ isLight }: ContactWindowProps) {
+export default function ContactWindow() {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -59,11 +55,7 @@ export default function ContactWindow({ isLight }: ContactWindowProps) {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex items-center gap-2 p-3 rounded-xl border ${
-              isLight
-                ? "border-light-border bg-light-card hover:border-kevin-accent"
-                : "border-kevin-border bg-kevin-card hover:border-kevin-accent"
-            } transition-colors group`}
+            className="flex items-center gap-2 p-3 rounded-xl border border-kevin-border bg-kevin-card hover:border-kevin-accent transition-colors group"
           >
             <span className="text-xl">{link.icon}</span>
             <div>
@@ -88,11 +80,7 @@ export default function ContactWindow({ isLight }: ContactWindowProps) {
               onChange={(e) =>
                 setFormState((s) => ({ ...s, name: e.target.value }))
               }
-              className={`w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none transition-colors ${
-                isLight
-                  ? "bg-light-bg border-light-border text-light-text focus:border-kevin-accent"
-                  : "bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
-              }`}
+              className="w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none transition-colors bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
               placeholder="Your name"
               required
             />
@@ -107,11 +95,7 @@ export default function ContactWindow({ isLight }: ContactWindowProps) {
               onChange={(e) =>
                 setFormState((s) => ({ ...s, email: e.target.value }))
               }
-              className={`w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none transition-colors ${
-                isLight
-                  ? "bg-light-bg border-light-border text-light-text focus:border-kevin-accent"
-                  : "bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
-              }`}
+              className="w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none transition-colors bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
               placeholder="your@email.com"
               required
             />
@@ -128,11 +112,7 @@ export default function ContactWindow({ isLight }: ContactWindowProps) {
               setFormState((s) => ({ ...s, message: e.target.value }))
             }
             rows={4}
-            className={`w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none resize-none transition-colors ${
-              isLight
-                ? "bg-light-bg border-light-border text-light-text focus:border-kevin-accent"
-                : "bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
-            }`}
+            className="w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none resize-none transition-colors bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
             placeholder="Type your message here..."
             required
           />
