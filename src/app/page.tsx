@@ -50,13 +50,13 @@ const initialWindows: WindowState[] = [
 ];
 
 const desktopIcons: { id: WindowId | "cv"; icon: React.ReactNode; label: string }[] = [
-  { id: "about", icon: <User size={22} />, label: "About Me" },
-  { id: "projects", icon: <FolderOpen size={22} />, label: "Projects" },
-  { id: "skills", icon: <Puzzle size={22} />, label: "Skills" },
-  { id: "terminal", icon: <Terminal size={22} />, label: "Terminal" },
-  { id: "achievements", icon: <Trophy size={22} />, label: "Achievements" },
-  { id: "contact", icon: <Mail size={22} />, label: "Contact" },
-  { id: "cv", icon: <FileDown size={22} />, label: "Download CV" },
+  { id: "about", icon: <User size={26} />, label: "About Me" },
+  { id: "projects", icon: <FolderOpen size={26} />, label: "Projects" },
+  { id: "skills", icon: <Puzzle size={26} />, label: "Skills" },
+  { id: "terminal", icon: <Terminal size={26} />, label: "Terminal" },
+  { id: "achievements", icon: <Trophy size={26} />, label: "Achievements" },
+  { id: "contact", icon: <Mail size={26} />, label: "Contact" },
+  { id: "cv", icon: <FileDown size={26} />, label: "Download CV" },
 ];
 
 export default function HomePage() {
@@ -363,7 +363,7 @@ export default function HomePage() {
 
           {/* Desktop Icons */}
           <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
-            <div className="flex flex-wrap gap-1" style={{ maxWidth: "calc(100vw - 100px)" }}>
+            <div className="grid grid-cols-2 gap-2">
               {desktopIcons.map((icon, index) => (
                 <DesktopIcon
                   key={icon.id}
