@@ -172,7 +172,7 @@ export default function HomePage() {
       } else if (section === "about" || section === "projects" || section === "skills" || section === "contact" || section === "achievements") {
         openWindow(section as WindowId);
       } else if (section === "github") {
-        window.open("https://github.com/ishimwekevin", "_blank");
+        window.open("https://github.com/Rudasingwa-kevin", "_blank");
       }
     },
     [openWindow, closeWindow]

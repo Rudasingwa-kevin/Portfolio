@@ -34,20 +34,20 @@ export default function ContactWindow() {
           {
             icon: "🐙",
             label: "GitHub",
-            value: "github.com/ishimwekevin",
-            href: "https://github.com/ishimwekevin",
-          },
-          {
-            icon: "💼",
-            label: "LinkedIn",
-            value: "linkedin.com/in/ishimwekevin",
-            href: "https://linkedin.com/in/ishimwekevin",
+            value: "github.com/Rudasingwa-kevin",
+            href: "https://github.com/Rudasingwa-kevin",
           },
           {
             icon: "📧",
             label: "Email",
-            value: "ishimbakevin@gmail.com",
-            href: "mailto:ishimbakevin@gmail.com",
+            value: "kevincracker02@gmail.com",
+            href: "mailto:kevincracker02@gmail.com",
+          },
+          {
+            icon: "📞",
+            label: "Phone",
+            value: "+250 782 028 955",
+            href: "tel:+250782028955",
           },
         ].map((link) => (
           <a

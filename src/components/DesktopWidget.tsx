@@ -82,7 +82,7 @@ export default function DesktopWidget() {
           Welcome to KevinOS
         </div>
         <div className="text-xs mt-2 font-mono text-kevin-text2">
-          Ishimwe Kevin &mdash; Software Engineer
+          Ishimwe Kevin &mdash; Software Engineer & Full-Stack Developer
         </div>
 
         {/* System stats row */}

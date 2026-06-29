@@ -14,10 +14,10 @@ const projects = [
     icon: "⚖️",
     tagline: "Legal Practice Management System",
     description:
-      "A comprehensive platform for law firms to manage cases, clients, documents, and billing. Built with modern web technologies for efficiency and security.",
-    tech: ["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Tailwind CSS", "Stripe"],
+      "Designed and developed a legal technology platform for lawyers and law firms. Implemented authentication, role-based access control, and modules for case and workflow management.",
+    tech: ["React", "Node.js", "PostgreSQL", "Express.js"],
     color: "from-blue-500 to-cyan-500",
-    live: "https://genzura.com",
+    live: "https://genzura-six.vercel.app/",
     github: "#",
   },
   {
@@ -26,10 +26,10 @@ const projects = [
     icon: "🌍",
     tagline: "Tourism & Events Platform",
     description:
-      "A tourism and events discovery platform showcasing the beauty of Gisenyi and surrounding areas. Features event listings, booking, and interactive maps.",
-    tech: ["Next.js", "TypeScript", "MongoDB", "Mapbox", "Tailwind CSS", "Vercel"],
+      "Built a tourism and events platform promoting destinations around Lake Kivu and Gisenyi. Implemented responsive design and SEO optimization. Deployed and maintained for public use.",
+    tech: ["React", "Tailwind CSS", "Vercel"],
     color: "from-green-500 to-emerald-500",
-    live: "https://gisenyi.top",
+    live: "https://gisenyi.top/",
     github: "#",
   },
 ];

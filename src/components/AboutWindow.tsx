@@ -4,34 +4,24 @@ import { motion } from "framer-motion";
 
 const milestones = [
   {
-    year: "2020",
-    title: "First Line of Code",
-    desc: "Wrote my first Python script. The spark of curiosity ignited a passion for building with code.",
-  },
-  {
-    year: "2021",
-    title: "Web Development Journey",
-    desc: "Dived deep into HTML, CSS, JavaScript, and React. Built my first full-stack application.",
-  },
-  {
     year: "2022",
-    title: "University & Open Source",
-    desc: "Started Computer Science studies. Contributed to open source projects and led dev communities.",
+    title: "Started University",
+    desc: "Began BSc in Software Engineering at Kigali Independent University (ULK).",
   },
   {
     year: "2023",
     title: "Genzura Launch",
-    desc: "Architected and launched Genzura, a comprehensive Legal Practice Management System.",
+    desc: "Designed and developed Genzura, a legal technology platform for lawyers and law firms with auth, RBAC, and case management.",
   },
   {
     year: "2024",
-    title: "Gisenyi.top & Growth",
-    desc: "Built Gisenyi.top tourism platform. Expanded expertise in cloud architecture and DevOps.",
+    title: "Gisenyi.top Launch",
+    desc: "Built a tourism and events platform promoting destinations around Lake Kivu and Gisenyi. Deployed to production.",
   },
   {
     year: "2025",
-    title: "Full-Stack Mastery",
-    desc: "Mastering distributed systems, microservices, and leading engineering teams.",
+    title: "AI & Full-Stack Growth",
+    desc: "Expanding expertise in AI, ASP.NET, and building production-ready applications across legal tech and tourism sectors.",
   },
 ];
 
@@ -45,16 +35,28 @@ export default function AboutWindow() {
         <div>
           <h2 className="text-xl font-bold text-gradient">Ishimwe Kevin</h2>
           <p className="text-kevin-text2 text-sm mt-1">
-            Software Engineer & Digital Architect
+            Software Engineer & Full-Stack Developer
           </p>
           <p className="text-kevin-text text-sm mt-3 leading-relaxed">
-            I&apos;m a software engineer who believes in building software that feels alive.
-            From writing my first line of code to architecting full-stack systems,
-            I&apos;ve been driven by the desire to create technology that makes a real difference.
-            I specialize in building scalable web applications, crafting intuitive user experiences,
-            and designing systems that solve complex problems. When I&apos;m not coding,
-            I&apos;m exploring new technologies, contributing to open source, or mentoring aspiring developers.
+            Year 3 Software Engineering student and Full-Stack Developer with practical
+            experience building and deploying production-ready web applications. Passionate
+            about solving real-world problems through technology and creating impactful
+            digital products. Specializing in legal technology and tourism platforms.
           </p>
+        </div>
+      </div>
+
+      <div className="border-t border-kevin-border pt-4">
+        <h3 className="text-sm font-bold text-kevin-accent mb-4 font-mono">
+          // EDUCATION
+        </h3>
+        <div className="flex items-start gap-3">
+          <div className="w-3 h-3 rounded-full bg-kevin-accent border-2 border-kevin-accent2 flex-shrink-0 mt-1" />
+          <div>
+            <h4 className="text-sm font-bold text-kevin-text">BSc in Software Engineering</h4>
+            <p className="text-xs text-kevin-text2 mt-0.5">Kigali Independent University (ULK)</p>
+            <p className="text-[10px] text-kevin-accent2 font-mono mt-0.5">Expected Graduation: 2027</p>
+          </div>
         </div>
       </div>
 

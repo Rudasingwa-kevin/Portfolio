@@ -49,7 +49,7 @@ Available commands:
   },
   clear: { output: "__CLEAR__" },
   whoami: {
-    output: "Ishimwe Kevin - Software Engineer | Full-Stack Developer | Digital Architect",
+    output: "Ishimwe Kevin - Software Engineer | Full-Stack Developer | AI Enthusiast",
   },
   date: { output: "" },
   genzura: { output: "Opening Genzura - Legal Practice Management System...", action: "genzura" },
