@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 interface DesktopIconProps {
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   onClick: () => void;
   index: number;
@@ -25,8 +25,8 @@ export default function DesktopIcon({
       whileHover={{ scale: 1.08, y: -2 }}
       whileTap={{ scale: 0.92 }}
     >
-      <div className="relative w-12 h-12 rounded-xl bg-kevin-card border border-kevin-border flex items-center justify-center text-2xl transition-all duration-200 group-hover:border-kevin-accent/50 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]">
-        {icon}
+      <div className="relative w-12 h-12 rounded-xl bg-kevin-card border border-kevin-border flex items-center justify-center transition-all duration-200 group-hover:border-kevin-accent/50 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]">
+        <span className="text-kevin-text2 group-hover:text-kevin-accent transition-colors duration-200">{icon}</span>
         <div className="absolute inset-0 rounded-xl bg-kevin-accent/0 group-hover:bg-kevin-accent/5 transition-colors duration-200" />
       </div>
       <span className="text-[11px] text-kevin-text2 text-center leading-tight font-medium group-hover:text-kevin-text transition-colors duration-200">

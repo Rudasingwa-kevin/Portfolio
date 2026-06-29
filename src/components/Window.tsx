@@ -5,7 +5,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 
 interface WindowProps {
   title: string;
-  icon: string;
+  icon: React.ReactNode;
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
@@ -111,7 +111,7 @@ export default function Window({
           }}
         >
           <div className="flex items-center gap-2 flex-1">
-            <span className="text-base">{icon}</span>
+            <span className="text-base text-kevin-text2">{icon}</span>
             <span className="text-sm font-medium text-kevin-text">{title}</span>
           </div>
           <div className="flex items-center gap-2">

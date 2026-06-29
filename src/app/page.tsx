@@ -2,6 +2,15 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  User,
+  FolderOpen,
+  Puzzle,
+  Terminal,
+  Trophy,
+  Mail,
+  FileDown,
+} from "lucide-react";
 import BootScreen from "@/components/BootScreen";
 import Window from "@/components/Window";
 import DesktopIcon from "@/components/DesktopIcon";
@@ -27,27 +36,27 @@ interface WindowState {
   isOpen: boolean;
   isMinimized: boolean;
   zIndex: number;
-  icon: string;
+  icon: React.ReactNode;
   title: string;
 }
 
 const initialWindows: WindowState[] = [
-  { id: "about", isOpen: false, isMinimized: false, zIndex: 10, icon: "👤", title: "About Me" },
-  { id: "projects", isOpen: false, isMinimized: false, zIndex: 11, icon: "📦", title: "Projects" },
-  { id: "skills", isOpen: false, isMinimized: false, zIndex: 12, icon: "🧩", title: "Skills" },
-  { id: "terminal", isOpen: false, isMinimized: false, zIndex: 13, icon: "💻", title: "Terminal" },
-  { id: "achievements", isOpen: false, isMinimized: false, zIndex: 14, icon: "🏅", title: "Achievements" },
-  { id: "contact", isOpen: false, isMinimized: false, zIndex: 15, icon: "📬", title: "Contact" },
+  { id: "about", isOpen: false, isMinimized: false, zIndex: 10, icon: <User size={18} />, title: "About Me" },
+  { id: "projects", isOpen: false, isMinimized: false, zIndex: 11, icon: <FolderOpen size={18} />, title: "Projects" },
+  { id: "skills", isOpen: false, isMinimized: false, zIndex: 12, icon: <Puzzle size={18} />, title: "Skills" },
+  { id: "terminal", isOpen: false, isMinimized: false, zIndex: 13, icon: <Terminal size={18} />, title: "Terminal" },
+  { id: "achievements", isOpen: false, isMinimized: false, zIndex: 14, icon: <Trophy size={18} />, title: "Achievements" },
+  { id: "contact", isOpen: false, isMinimized: false, zIndex: 15, icon: <Mail size={18} />, title: "Contact" },
 ];
 
-const desktopIcons: { id: WindowId | "cv"; icon: string; label: string }[] = [
-  { id: "about", icon: "👤", label: "About Me" },
-  { id: "projects", icon: "📦", label: "Projects" },
-  { id: "skills", icon: "🧩", label: "Skills" },
-  { id: "terminal", icon: "💻", label: "Terminal" },
-  { id: "achievements", icon: "🏅", label: "Achievements" },
-  { id: "contact", icon: "📬", label: "Contact" },
-  { id: "cv", icon: "📄", label: "Download CV" },
+const desktopIcons: { id: WindowId | "cv"; icon: React.ReactNode; label: string }[] = [
+  { id: "about", icon: <User size={22} />, label: "About Me" },
+  { id: "projects", icon: <FolderOpen size={22} />, label: "Projects" },
+  { id: "skills", icon: <Puzzle size={22} />, label: "Skills" },
+  { id: "terminal", icon: <Terminal size={22} />, label: "Terminal" },
+  { id: "achievements", icon: <Trophy size={22} />, label: "Achievements" },
+  { id: "contact", icon: <Mail size={22} />, label: "Contact" },
+  { id: "cv", icon: <FileDown size={22} />, label: "Download CV" },
 ];
 
 export default function HomePage() {
@@ -305,7 +314,7 @@ export default function HomePage() {
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ y: -1 }}
                   >
-                    <span className="text-sm">{w.icon}</span>
+                    <span className="flex items-center justify-center text-sm">{w.icon}</span>
                     <span className="hidden sm:inline font-medium">{w.title}</span>
                   </motion.button>
                 ))}
