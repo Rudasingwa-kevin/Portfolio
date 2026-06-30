@@ -156,7 +156,7 @@ export default function Window({
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto window-content-area">{children}</div>
+        <div className="flex-1 overflow-auto window-content-area p-5">{children}</div>
       </div>
     </motion.div>
   );
