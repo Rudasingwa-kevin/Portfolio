@@ -21,15 +21,27 @@ export default function ContactWindow() {
   };
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center gap-2">
-        <span className="text-lg">📬</span>
-        <h2 className="text-sm font-bold text-kevin-accent font-mono">
+    <div className="p-1 space-y-5">
+      <motion.div
+        className="flex items-center gap-2.5"
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+      >
+        <div className="w-8 h-8 rounded-lg bg-kevin-accent/10 flex items-center justify-center text-lg">
+          📬
+        </div>
+        <h2 className="text-xs font-bold text-kevin-accent font-mono tracking-wider">
           // MESSAGE CONSOLE
         </h2>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-3 gap-2.5"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
         {[
           {
             icon: "🐙",
@@ -55,23 +67,31 @@ export default function ContactWindow() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 p-3 rounded-xl border border-kevin-border bg-kevin-card hover:border-kevin-accent transition-colors group"
+            className="flex items-center gap-2.5 p-3 rounded-xl border border-kevin-border/50 bg-kevin-card/30 hover:border-kevin-accent/40 hover:bg-kevin-accent/5 transition-all duration-200 group"
           >
-            <span className="text-xl">{link.icon}</span>
-            <div>
-              <span className="text-xs font-bold text-kevin-text block">{link.label}</span>
-              <span className="text-[10px] text-kevin-text2 group-hover:text-kevin-accent transition-colors">
+            <div className="w-9 h-9 rounded-lg bg-kevin-card border border-kevin-border/40 flex items-center justify-center text-lg shadow-sm group-hover:border-kevin-accent/30 transition-colors">
+              {link.icon}
+            </div>
+            <div className="min-w-0">
+              <span className="text-[12px] font-bold text-kevin-text block">{link.label}</span>
+              <span className="text-[10px] text-kevin-text2 group-hover:text-kevin-accent transition-colors truncate block">
                 {link.value}
               </span>
             </div>
           </a>
         ))}
-      </div>
+      </motion.div>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <motion.form
+        onSubmit={handleSubmit}
+        className="space-y-3"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+      >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-kevin-text2 font-mono mb-1 block">
+            <label className="text-[11px] text-kevin-text2 font-mono mb-1.5 block">
               &gt; name:
             </label>
             <input
@@ -80,13 +100,13 @@ export default function ContactWindow() {
               onChange={(e) =>
                 setFormState((s) => ({ ...s, name: e.target.value }))
               }
-              className="w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none transition-colors bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
+              className="w-full px-3.5 py-2.5 rounded-xl border text-[13px] font-mono outline-none transition-all duration-200 bg-kevin-card/30 border-kevin-border/50 text-kevin-text focus:border-kevin-accent/60 focus:bg-kevin-card/50 focus:shadow-sm focus:shadow-kevin-accent/5"
               placeholder="Your name"
               required
             />
           </div>
           <div>
-            <label className="text-xs text-kevin-text2 font-mono mb-1 block">
+            <label className="text-[11px] text-kevin-text2 font-mono mb-1.5 block">
               &gt; email:
             </label>
             <input
@@ -95,7 +115,7 @@ export default function ContactWindow() {
               onChange={(e) =>
                 setFormState((s) => ({ ...s, email: e.target.value }))
               }
-              className="w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none transition-colors bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
+              className="w-full px-3.5 py-2.5 rounded-xl border text-[13px] font-mono outline-none transition-all duration-200 bg-kevin-card/30 border-kevin-border/50 text-kevin-text focus:border-kevin-accent/60 focus:bg-kevin-card/50 focus:shadow-sm focus:shadow-kevin-accent/5"
               placeholder="your@email.com"
               required
             />
@@ -103,7 +123,7 @@ export default function ContactWindow() {
         </div>
 
         <div>
-          <label className="text-xs text-kevin-text2 font-mono mb-1 block">
+          <label className="text-[11px] text-kevin-text2 font-mono mb-1.5 block">
             &gt; message:
           </label>
           <textarea
@@ -112,7 +132,7 @@ export default function ContactWindow() {
               setFormState((s) => ({ ...s, message: e.target.value }))
             }
             rows={4}
-            className="w-full px-3 py-2 rounded-lg border text-sm font-mono outline-none resize-none transition-colors bg-kevin-bg border-kevin-border text-kevin-text focus:border-kevin-accent"
+            className="w-full px-3.5 py-2.5 rounded-xl border text-[13px] font-mono outline-none resize-none transition-all duration-200 bg-kevin-card/30 border-kevin-border/50 text-kevin-text focus:border-kevin-accent/60 focus:bg-kevin-card/50 focus:shadow-sm focus:shadow-kevin-accent/5"
             placeholder="Type your message here..."
             required
           />
@@ -120,16 +140,16 @@ export default function ContactWindow() {
 
         <motion.button
           type="submit"
-          className={`w-full py-2.5 rounded-lg font-mono text-sm font-bold transition-all ${
+          className={`w-full py-2.5 rounded-xl font-mono text-[13px] font-bold transition-all duration-300 ${
             sent
-              ? "bg-kevin-success text-white"
-              : "bg-kevin-accent text-white hover:bg-kevin-accent/80"
+              ? "bg-kevin-success text-white shadow-lg shadow-kevin-success/20"
+              : "bg-kevin-accent text-white hover:bg-kevin-accent/85 shadow-sm shadow-kevin-accent/20 hover:shadow-md hover:shadow-kevin-accent/25"
           }`}
           whileTap={{ scale: 0.98 }}
         >
           {sent ? "✓ Message Sent!" : "> send_message"}
         </motion.button>
-      </form>
+      </motion.form>
     </div>
   );
 }
