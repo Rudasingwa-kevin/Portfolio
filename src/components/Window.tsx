@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, type PanInfo } from "framer-motion";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 interface WindowProps {
   title: string;
@@ -38,23 +38,14 @@ export default function Window({
     w: number;
     h: number;
   } | null>(null);
-  const constraintsRef = useRef<HTMLDivElement>(null);
 
+  const prevOpenRef = useRef(isOpen);
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !prevOpenRef.current) {
       setPosition(initialPosition);
     }
+    prevOpenRef.current = isOpen;
   }, [isOpen, initialPosition]);
-
-  const handleDrag = useCallback(
-    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      setPosition((prev) => ({
-        x: prev.x + info.delta.x,
-        y: prev.y + info.delta.y,
-      }));
-    },
-    []
-  );
 
   const toggleMaximize = useCallback(() => {
     if (isMaximized) {
@@ -84,10 +75,10 @@ export default function Window({
         top: isMaximized ? 0 : position.y,
         left: isMaximized ? 0 : position.x,
       }}
-      initial={{ opacity: 0, scale: 0.92, y: 30, filter: "blur(4px)" }}
-      animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-      exit={{ opacity: 0, scale: 0.92, y: 20, filter: "blur(4px)" }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.92 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       onMouseDown={onFocus}
       onClick={onFocus}
     >

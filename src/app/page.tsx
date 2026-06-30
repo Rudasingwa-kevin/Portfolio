@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   User,
@@ -185,11 +185,14 @@ export default function HomePage() {
     [openWindow]
   );
 
-  const getPositions = (index: number) => {
-    const baseX = 60 + (index % 3) * 250;
-    const baseY = 40 + Math.floor(index / 3) * 220;
-    return { x: baseX, y: baseY };
-  };
+  const positions = useMemo(
+    () =>
+      initialWindows.map((_, index) => ({
+        x: 60 + (index % 3) * 250,
+        y: 40 + Math.floor(index / 3) * 220,
+      })),
+    []
+  );
 
   return (
     <>
@@ -355,7 +358,7 @@ export default function HomePage() {
                 isOpen={win.isOpen && !win.isMinimized}
                 onClose={() => closeWindow(win.id)}
                 onMinimize={() => minimizeWindow(win.id)}
-                initialPosition={getPositions(index)}
+                initialPosition={positions[index]}
                 width={win.id === "terminal" ? 650 : 700}
                 height={win.id === "terminal" ? 450 : 520}
                 zIndex={win.zIndex}
