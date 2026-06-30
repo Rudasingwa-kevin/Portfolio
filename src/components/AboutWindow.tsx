@@ -129,7 +129,7 @@ export default function AboutWindow() {
         <div className="p-5 space-y-0">
           {milestones.map((m, i) => (
             <motion.div
-              key={m.year}
+              key={i}
               className="flex gap-4 group"
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
