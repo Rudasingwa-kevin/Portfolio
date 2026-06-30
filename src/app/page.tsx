@@ -148,11 +148,7 @@ export default function HomePage() {
   const handleDesktopIcon = useCallback(
     (id: WindowId | "cv") => {
       if (id === "cv") {
-        // Trigger CV download
-        const link = document.createElement("a");
-        link.href = "/Ishimwe_Kevin_CV.pdf";
-        link.download = "Ishimwe_Kevin_CV.pdf";
-        link.click();
+        window.open("/Ishimwe_Kevin_CV.pdf", "_blank");
         return;
       }
       const win = windows.find((w) => w.id === id);
