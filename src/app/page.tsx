@@ -355,8 +355,8 @@ export default function HomePage() {
                 onClose={() => closeWindow(win.id)}
                 onMinimize={() => minimizeWindow(win.id)}
                 initialPosition={positions[index]}
-                width={win.id === "terminal" ? 650 : 700}
-                height={win.id === "terminal" ? 450 : 520}
+                width={win.id === "terminal" ? 650 : 750}
+                height={win.id === "terminal" ? 450 : 560}
                 zIndex={win.zIndex}
                 onFocus={() => focusWindow(win.id)}
               >
