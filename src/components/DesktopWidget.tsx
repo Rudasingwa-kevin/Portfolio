@@ -117,8 +117,8 @@ export default function DesktopWidget() {
             transition={{ delay: 1.0, duration: 0.6 }}
           >
             {[
-              { label: "UPTIME", value: "3+ yrs" },
-              { label: "PROJECTS", value: "10+" },
+              { label: "UPTIME", value: "2+ yrs" },
+              { label: "PROJECTS", value: "5+" },
               { label: "STATUS", value: "ACTIVE" },
             ].map((stat, i) => (
               <motion.div
