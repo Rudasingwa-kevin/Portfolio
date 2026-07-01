@@ -14,6 +14,10 @@ export default function ContactWindow() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const { name, email, message } = formState;
+    const text = `Hello, I'm ${name} (${email}).\n\n${message}`;
+    const url = `https://wa.me/250782028955?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
     setSent(true);
     setTimeout(() => {
       setSent(false);
@@ -159,7 +163,7 @@ export default function ContactWindow() {
             whileTap={{ scale: 0.98 }}
           >
             <Send className="w-3.5 h-3.5" />
-            {sent ? "Message Sent!" : "send_message"}
+            {sent ? "Message Sent!" : "Send via WhatsApp"}
           </motion.button>
         </form>
       </motion.div>
