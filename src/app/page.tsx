@@ -361,9 +361,7 @@ export default function HomePage() {
                 onFocus={() => focusWindow(win.id)}
               >
                 {win.id === "about" && <AboutWindow />}
-                {win.id === "projects" && (
-                  <ProjectsWindow onOpenProject={handleOpenProject} />
-                )}
+                {win.id === "projects" && <ProjectsWindow />}
                 {win.id === "skills" && <SkillsWindow />}
                 {win.id === "terminal" && (
                   <TerminalWindow

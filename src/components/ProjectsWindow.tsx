@@ -4,10 +4,6 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FolderOpen, ExternalLink, GitBranch, Scale, Globe } from "lucide-react";
 
-interface ProjectsWindowProps {
-  onOpenProject?: (name: string) => void;
-}
-
 const projects = [
   {
     id: "genzura",
@@ -37,7 +33,7 @@ const projects = [
   },
 ];
 
-export default function ProjectsWindow({ }: ProjectsWindowProps) {
+export default function ProjectsWindow() {
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
 
   return (
