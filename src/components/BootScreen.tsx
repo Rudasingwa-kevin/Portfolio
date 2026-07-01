@@ -2,10 +2,10 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { version } from "../../package.json";
+import { APP_VERSION } from "@/lib/version";
 
 const bootLines = [
-  { text: `> Loading KevinOS v${version}...`, delay: 0 },
+  { text: `> Loading KevinOS v${APP_VERSION}...`, delay: 0 },
   { text: "> Initializing kernel modules...", delay: 400 },
   { text: "> Mounting project drivers...", delay: 800 },
   { text: "> Loading skill engines...", delay: 1200 },

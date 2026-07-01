@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { version } from "../../package.json";
+import { APP_VERSION } from "@/lib/version";
 
 interface TerminalWindowProps {
   onNavigate?: (section: string) => void;
@@ -10,7 +10,7 @@ interface TerminalWindowProps {
 }
 
 const WELCOME = `
-KevinOS Terminal v${version}
+KevinOS Terminal v${APP_VERSION}
 Type "help" for available commands.
 `;
 
