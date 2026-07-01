@@ -20,7 +20,7 @@ const projects = [
     color: "from-blue-500 to-cyan-500",
     status: "Live",
     live: "https://genzura-six.vercel.app/",
-    github: "#",
+    github: "https://github.com/Rudasingwa-kevin/Genzura",
   },
   {
     id: "gisenyi",
@@ -33,7 +33,7 @@ const projects = [
     color: "from-green-500 to-emerald-500",
     status: "Live",
     live: "https://gisenyi.top/",
-    github: "#",
+    github: "https://github.com/Rudasingwa-kevin/Gisenyi",
   },
 ];
 
