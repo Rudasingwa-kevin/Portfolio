@@ -111,7 +111,7 @@ export default function TerminalWindow({
         if (command.action === "github") {
           window.open("https://github.com/Rudasingwa-kevin", "_blank");
         } else if (command.action === "resume") {
-          // Download handled externally
+          window.open("/Ishimwe_Kevin_CV.pdf", "_blank");
         } else if (command.action === "exit") {
           setTimeout(() => {
             setHistory([]);
