@@ -13,6 +13,9 @@ interface Particle {
   pulseSpeed: number;
 }
 
+const CONNECTION_DIST = 100;
+const CELL_SIZE = CONNECTION_DIST;
+
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -76,20 +79,51 @@ export default function ParticleBackground() {
         }
       }
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+      // Spatial hash grid for O(n) connection lines
+      const grid = new Map<number, Particle[]>();
+      for (const p of particles) {
+        const cellX = Math.floor(p.x / CELL_SIZE);
+        const cellY = Math.floor(p.y / CELL_SIZE);
+        const key = cellX + cellY * 10000;
+        const bucket = grid.get(key);
+        if (bucket) {
+          bucket.push(p);
+        } else {
+          grid.set(key, [p]);
+        }
+      }
 
-          if (dist < 100) {
-            const lineOpacity = (1 - dist / 100) * 0.08;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(59, 130, 246, ${lineOpacity})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+      for (const [key, bucket] of grid) {
+        const cellX = key % 10000;
+        const cellY = (key - cellX) / 10000;
+
+        for (let dx = -1; dx <= 1; dx++) {
+          for (let dy = -1; dy <= 1; dy++) {
+            const neighborKey = cellX + dx + (cellY + dy) * 10000;
+            const neighbors = grid.get(neighborKey);
+            if (!neighbors) continue;
+
+            for (const a of bucket) {
+              for (const b of neighbors) {
+                if (a === b) continue;
+                // Avoid duplicate pairs: only draw when a < b by reference
+                if (a.x > b.x || (a.x === b.x && a.y >= b.y)) continue;
+
+                const distX = a.x - b.x;
+                const distY = a.y - b.y;
+                const dist = Math.sqrt(distX * distX + distY * distY);
+
+                if (dist < CONNECTION_DIST) {
+                  const lineOpacity = (1 - dist / CONNECTION_DIST) * 0.08;
+                  ctx.beginPath();
+                  ctx.moveTo(a.x, a.y);
+                  ctx.lineTo(b.x, b.y);
+                  ctx.strokeStyle = `rgba(59, 130, 246, ${lineOpacity})`;
+                  ctx.lineWidth = 0.5;
+                  ctx.stroke();
+                }
+              }
+            }
           }
         }
       }
