@@ -15,18 +15,24 @@ export const metadata: Metadata = {
     "KevinOS",
   ],
   authors: [{ name: "Ishimwe Kevin" }],
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   openGraph: {
     title: "KevinOS | Ishimwe Kevin - Software Engineer",
     description:
       "Interactive digital workspace of Ishimwe Kevin. Explore projects, skills, and experience.",
     type: "website",
     locale: "en_US",
+    images: ["/api/og"],
   },
   twitter: {
     card: "summary_large_image",
     title: "KevinOS | Ishimwe Kevin",
     description:
       "Interactive digital workspace of Ishimwe Kevin.",
+    images: ["/api/og"],
   },
 };
 
