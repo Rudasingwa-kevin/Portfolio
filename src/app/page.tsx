@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   User,
@@ -64,7 +64,7 @@ export default function HomePage() {
   const [windows, setWindows] = useState<WindowState[]>(initialWindows);
   const [highestZ, setHighestZ] = useState(20);
   const [time, setTime] = useState("");
-  const [konamiProgress, setKonamiProgress] = useState(0);
+  const konamiProgressRef = useRef(0);
   const [showSecret, setShowSecret] = useState(false);
 
   const konamiCode = [
@@ -91,21 +91,21 @@ export default function HomePage() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === konamiCode[konamiProgress]) {
-        const next = konamiProgress + 1;
+      if (e.key === konamiCode[konamiProgressRef.current]) {
+        const next = konamiProgressRef.current + 1;
         if (next === konamiCode.length) {
           setShowSecret(true);
-          setKonamiProgress(0);
+          konamiProgressRef.current = 0;
         } else {
-          setKonamiProgress(next);
+          konamiProgressRef.current = next;
         }
       } else {
-        setKonamiProgress(0);
+        konamiProgressRef.current = 0;
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [konamiProgress]);
+  }, []);
 
   const openWindow = useCallback(
     (id: WindowId) => {

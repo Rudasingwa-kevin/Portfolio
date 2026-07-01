@@ -15,6 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kevinos.vercel.app"),
   title: "KevinOS | Ishimwe Kevin - Software Engineer",
   description:
     "Interactive digital workspace of Ishimwe Kevin, a software engineer. Explore projects, skills, and experience in an immersive OS-style interface.",
