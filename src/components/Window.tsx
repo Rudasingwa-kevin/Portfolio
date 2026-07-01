@@ -89,9 +89,15 @@ export default function Window({
             if (isMaximized) return;
             const startX = e.clientX - position.x;
             const startY = e.clientY - position.y;
+            const minVisible = 100;
 
             const onMove = (ev: MouseEvent) => {
-              setPosition({ x: ev.clientX - startX, y: ev.clientY - startY });
+              const maxX = window.innerWidth - minVisible;
+              const maxY = window.innerHeight - 48 - minVisible;
+              setPosition({
+                x: Math.min(Math.max(ev.clientX - startX, -width + minVisible), maxX),
+                y: Math.min(Math.max(ev.clientY - startY, -height + minVisible), maxY),
+              });
             };
             const onUp = () => {
               window.removeEventListener("mousemove", onMove);
