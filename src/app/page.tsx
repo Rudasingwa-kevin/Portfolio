@@ -181,13 +181,24 @@ export default function HomePage() {
     [openWindow]
   );
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const positions = useMemo(
     () =>
       initialWindows.map((_, index) => ({
-        x: 60 + (index % 3) * 250,
-        y: 40 + Math.floor(index / 3) * 220,
+        x: isMobile ? 0 : 60 + (index % 3) * 250,
+        y: isMobile ? 0 : 40 + Math.floor(index / 3) * 220,
       })),
-    []
+    [isMobile]
   );
 
   return (
@@ -327,8 +338,8 @@ export default function HomePage() {
           <ParticleBackground />
 
           {/* Desktop Icons */}
-          <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
-            <div className="grid grid-cols-2 gap-2">
+          <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10">
+            <div className="grid grid-cols-3 sm:grid-cols-2 gap-1.5 sm:gap-2">
               {desktopIcons.map((icon, index) => (
                 <DesktopIcon
                   key={icon.id}

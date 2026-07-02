@@ -38,14 +38,28 @@ export default function Window({
     w: number;
     h: number;
   } | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const prevOpenRef = useRef(isOpen);
   useEffect(() => {
     if (isOpen && !prevOpenRef.current) {
-      setPosition(initialPosition);
+      if (isMobile) {
+        setPosition({ x: 0, y: 0 });
+      } else {
+        setPosition(initialPosition);
+      }
     }
     prevOpenRef.current = isOpen;
-  }, [isOpen, initialPosition]);
+  }, [isOpen, initialPosition, isMobile]);
 
   const toggleMaximize = useCallback(() => {
     if (isMaximized) {
@@ -62,8 +76,8 @@ export default function Window({
 
   if (!isOpen) return null;
 
-  const w = isMaximized ? window.innerWidth : width;
-  const h = isMaximized ? window.innerHeight - 48 : height;
+  const w = isMobile ? window.innerWidth : isMaximized ? window.innerWidth : width;
+  const h = isMobile ? window.innerHeight - 56 : isMaximized ? window.innerHeight - 48 : height;
 
   return (
     <motion.div
@@ -86,7 +100,7 @@ export default function Window({
         <div
           className="window-titlebar"
           onMouseDown={(e) => {
-            if (isMaximized) return;
+            if (isMaximized || isMobile) return;
             const startX = e.clientX - position.x;
             const startY = e.clientY - position.y;
             const minVisible = 100;
@@ -105,6 +119,29 @@ export default function Window({
             };
             window.addEventListener("mousemove", onMove);
             window.addEventListener("mouseup", onUp);
+          }}
+          onTouchStart={(e) => {
+            if (isMaximized || isMobile) return;
+            const touch = e.touches[0];
+            const startX = touch.clientX - position.x;
+            const startY = touch.clientY - position.y;
+            const minVisible = 100;
+
+            const onMove = (ev: TouchEvent) => {
+              const t = ev.touches[0];
+              const maxX = window.innerWidth - minVisible;
+              const maxY = window.innerHeight - 48 - minVisible;
+              setPosition({
+                x: Math.min(Math.max(t.clientX - startX, -width + minVisible), maxX),
+                y: Math.min(Math.max(t.clientY - startY, -height + minVisible), maxY),
+              });
+            };
+            const onEnd = () => {
+              window.removeEventListener("touchmove", onMove);
+              window.removeEventListener("touchend", onEnd);
+            };
+            window.addEventListener("touchmove", onMove);
+            window.addEventListener("touchend", onEnd);
           }}
         >
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
