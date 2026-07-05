@@ -5,7 +5,7 @@ import { User, GraduationCap, Calendar, Rocket, Activity } from "lucide-react";
 
 const milestones = [
   {
-    year: "2022",
+    year: "2023",
     title: "Started University",
     desc: "Began BSc in Software Engineering at Kigali Independent University (ULK).",
   },
