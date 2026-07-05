@@ -76,8 +76,9 @@ export default function Window({
 
   if (!isOpen) return null;
 
+  const TASKBAR_HEIGHT = 56;
   const w = isMobile ? window.innerWidth : isMaximized ? window.innerWidth : width;
-  const h = isMobile ? window.innerHeight - 56 : isMaximized ? window.innerHeight - 48 : height;
+  const h = isMobile ? window.innerHeight - TASKBAR_HEIGHT : isMaximized ? window.innerHeight - TASKBAR_HEIGHT : height;
 
   return (
     <motion.div
@@ -107,7 +108,7 @@ export default function Window({
 
             const onMove = (ev: MouseEvent) => {
               const maxX = window.innerWidth - minVisible;
-              const maxY = window.innerHeight - 48 - minVisible;
+              const maxY = window.innerHeight - TASKBAR_HEIGHT - minVisible;
               setPosition({
                 x: Math.min(Math.max(ev.clientX - startX, -width + minVisible), maxX),
                 y: Math.min(Math.max(ev.clientY - startY, -height + minVisible), maxY),
@@ -130,7 +131,7 @@ export default function Window({
             const onMove = (ev: TouchEvent) => {
               const t = ev.touches[0];
               const maxX = window.innerWidth - minVisible;
-              const maxY = window.innerHeight - 48 - minVisible;
+              const maxY = window.innerHeight - TASKBAR_HEIGHT - minVisible;
               setPosition({
                 x: Math.min(Math.max(t.clientX - startX, -width + minVisible), maxX),
                 y: Math.min(Math.max(t.clientY - startY, -height + minVisible), maxY),
