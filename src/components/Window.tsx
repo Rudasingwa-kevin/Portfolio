@@ -104,14 +104,15 @@ export default function Window({
             if (isMaximized || isMobile) return;
             const startX = e.clientX - position.x;
             const startY = e.clientY - position.y;
-            const minVisible = 100;
+            const titlebarH = 44;
+            const minVisibleX = 80;
 
             const onMove = (ev: MouseEvent) => {
-              const maxX = window.innerWidth - minVisible;
-              const maxY = window.innerHeight - TASKBAR_HEIGHT - minVisible;
+              const maxX = window.innerWidth - minVisibleX;
+              const maxY = window.innerHeight - TASKBAR_HEIGHT - titlebarH;
               setPosition({
-                x: Math.min(Math.max(ev.clientX - startX, -width + minVisible), maxX),
-                y: Math.min(Math.max(ev.clientY - startY, -height + minVisible), maxY),
+                x: Math.min(Math.max(ev.clientX - startX, -width + minVisibleX), maxX),
+                y: Math.min(Math.max(ev.clientY - startY, -titlebarH), maxY),
               });
             };
             const onUp = () => {
@@ -126,15 +127,16 @@ export default function Window({
             const touch = e.touches[0];
             const startX = touch.clientX - position.x;
             const startY = touch.clientY - position.y;
-            const minVisible = 100;
+            const titlebarH = 44;
+            const minVisibleX = 80;
 
             const onMove = (ev: TouchEvent) => {
               const t = ev.touches[0];
-              const maxX = window.innerWidth - minVisible;
-              const maxY = window.innerHeight - TASKBAR_HEIGHT - minVisible;
+              const maxX = window.innerWidth - minVisibleX;
+              const maxY = window.innerHeight - TASKBAR_HEIGHT - titlebarH;
               setPosition({
-                x: Math.min(Math.max(t.clientX - startX, -width + minVisible), maxX),
-                y: Math.min(Math.max(t.clientY - startY, -height + minVisible), maxY),
+                x: Math.min(Math.max(t.clientX - startX, -width + minVisibleX), maxX),
+                y: Math.min(Math.max(t.clientY - startY, -titlebarH), maxY),
               });
             };
             const onEnd = () => {
