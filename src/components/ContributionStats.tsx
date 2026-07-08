@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Flame, TrendingUp, Calendar, RefreshCw } from "lucide-react";
+import { Flame, TrendingUp, Calendar, RefreshCw, Zap, BarChart3 } from "lucide-react";
 
 interface ContributionDay {
   date: string;
@@ -24,6 +24,8 @@ interface Stats {
   longestStreak: number;
   mostActiveDay: string;
   contributionsByDay: Record<string, number>;
+  weeklyAverage: number;
+  activeDays: number;
 }
 
 function processCalendar(calendar: ContributionCalendar): Stats {
@@ -69,13 +71,16 @@ function processCalendar(calendar: ContributionCalendar): Stats {
 
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const dayTotals: Record<string, number> = {};
+  let activeDays = 0;
   for (const day of sortedDays) {
     if (contributionsByDay[day] > 0) {
       const dayName = dayNames[new Date(day + "T12:00:00").getDay()];
       dayTotals[dayName] = (dayTotals[dayName] || 0) + contributionsByDay[day];
+      activeDays++;
     }
   }
   const mostActiveDay = Object.entries(dayTotals).sort(([, a], [, b]) => b - a)[0]?.[0] || "N/A";
+  const weeklyAverage = total / Math.max(calendar.weeks.length, 1);
 
   return {
     total,
@@ -83,19 +88,44 @@ function processCalendar(calendar: ContributionCalendar): Stats {
     longestStreak,
     mostActiveDay,
     contributionsByDay,
+    weeklyAverage,
+    activeDays,
   };
 }
 
 function getContributionLevel(count: number): string {
   if (count === 0) return "bg-[#161b22]";
-  if (count <= 2) return "bg-[#0e4429]";
-  if (count <= 5) return "bg-[#006d32]";
-  if (count <= 10) return "bg-[#26a641]";
-  return "bg-[#39d353]";
+  if (count <= 2) return "bg-[#1a1a4e]";
+  if (count <= 5) return "bg-[#2d2d8a]";
+  if (count <= 10) return "bg-[#3b82f6]";
+  return "bg-[#60a5fa]";
 }
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
+
+function AnimatedNumber({ value, delay = 0 }: { value: number; delay?: number }) {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.round(v));
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(count, value, {
+      duration: 1.5,
+      delay,
+      ease: "easeOut",
+    });
+    
+    const unsubscribe = rounded.on("change", (v) => setDisplayValue(v));
+    
+    return () => {
+      controls.stop();
+      unsubscribe();
+    };
+  }, [value, count, rounded, delay]);
+
+  return <span>{displayValue}</span>;
+}
 
 export default function ContributionStats() {
   const [calendar, setCalendar] = useState<ContributionCalendar | null>(null);
@@ -202,78 +232,105 @@ export default function ContributionStats() {
         </h2>
       </motion.div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 gap-2 sm:gap-3">
-        <motion.div
-          className="rounded-xl border border-kevin-border/40 bg-kevin-card/30 p-2.5 sm:p-3"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-        >
-          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-            <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" />
-            <span className="text-[9px] sm:text-[10px] text-kevin-text2 font-medium">Total</span>
+      {/* Main Stats - Total with glow */}
+      <motion.div
+        className="rounded-xl border border-kevin-accent/30 bg-gradient-to-br from-kevin-accent/10 to-purple-500/10 p-4 sm:p-5 relative overflow-hidden"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-kevin-accent/5 to-purple-500/5 animate-pulse" />
+        <div className="relative">
+          <div className="flex items-center gap-2 mb-2">
+            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-kevin-accent" />
+            <span className="text-[10px] sm:text-[11px] text-kevin-text2 font-medium">Total Contributions</span>
           </div>
-          <div className="text-xl sm:text-2xl font-bold text-kevin-text">{stats.total}</div>
-          <div className="text-[8px] sm:text-[9px] text-kevin-text2">last 12 months</div>
-        </motion.div>
+          <div className="text-4xl sm:text-5xl font-bold text-kevin-text glow-text">
+            <AnimatedNumber value={stats.total} />
+          </div>
+          <div className="text-[10px] sm:text-[11px] text-kevin-text2 mt-1">in the last year</div>
+        </div>
+      </motion.div>
 
+      {/* Secondary Stats */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         <motion.div
-          className="rounded-xl border border-kevin-border/40 bg-kevin-card/30 p-2.5 sm:p-3"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          className="rounded-xl border border-kevin-border/40 bg-kevin-card/30 p-2.5 sm:p-3 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-            <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-400" />
-            <span className="text-[9px] sm:text-[10px] text-kevin-text2 font-medium">Streak</span>
+          <div className="flex items-center justify-center gap-1 mb-1">
+            <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-orange-400" />
+            <span className="text-[8px] sm:text-[9px] text-kevin-text2 font-medium">Streak</span>
           </div>
-          <div className="text-xl sm:text-2xl font-bold text-kevin-text">{stats.currentStreak}</div>
-          <div className="text-[8px] sm:text-[9px] text-kevin-text2">days current</div>
+          <div className="text-lg sm:text-xl font-bold text-kevin-text">
+            <AnimatedNumber value={stats.currentStreak} delay={0.2} />
+          </div>
+          <div className="text-[7px] sm:text-[8px] text-kevin-text2">days</div>
         </motion.div>
 
         <motion.div
-          className="rounded-xl border border-kevin-border/40 bg-kevin-card/30 p-2.5 sm:p-3"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          className="rounded-xl border border-kevin-border/40 bg-kevin-card/30 p-2.5 sm:p-3 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-            <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400" />
-            <span className="text-[9px] sm:text-[10px] text-kevin-text2 font-medium">Best</span>
+          <div className="flex items-center justify-center gap-1 mb-1">
+            <BarChart3 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-400" />
+            <span className="text-[8px] sm:text-[9px] text-kevin-text2 font-medium">Weekly</span>
           </div>
-          <div className="text-xl sm:text-2xl font-bold text-kevin-text">{stats.longestStreak}</div>
-          <div className="text-[8px] sm:text-[9px] text-kevin-text2">days longest</div>
+          <div className="text-lg sm:text-xl font-bold text-kevin-text">
+            <AnimatedNumber value={Math.round(stats.weeklyAverage * 10) / 10} delay={0.3} />
+          </div>
+          <div className="text-[7px] sm:text-[8px] text-kevin-text2">avg/week</div>
         </motion.div>
 
         <motion.div
-          className="rounded-xl border border-kevin-border/40 bg-kevin-card/30 p-2.5 sm:p-3"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          className="rounded-xl border border-kevin-border/40 bg-kevin-card/30 p-2.5 sm:p-3 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
-            <span className="text-xs sm:text-sm">📅</span>
-            <span className="text-[9px] sm:text-[10px] text-kevin-text2 font-medium">Peak</span>
+          <div className="flex items-center justify-center gap-1 mb-1">
+            <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />
+            <span className="text-[8px] sm:text-[9px] text-kevin-text2 font-medium">Best</span>
           </div>
-          <div className="text-base sm:text-lg font-bold text-kevin-text">{stats.mostActiveDay}</div>
-          <div className="text-[8px] sm:text-[9px] text-kevin-text2">most active day</div>
+          <div className="text-lg sm:text-xl font-bold text-kevin-text">
+            <AnimatedNumber value={stats.longestStreak} delay={0.4} />
+          </div>
+          <div className="text-[7px] sm:text-[8px] text-kevin-text2">day streak</div>
         </motion.div>
       </div>
+
+      {/* Additional Info */}
+      <motion.div
+        className="flex items-center justify-between px-3 py-2 rounded-lg bg-kevin-card/20 border border-kevin-border/30"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] sm:text-[11px]">📅</span>
+          <span className="text-[9px] sm:text-[10px] text-kevin-text2">
+            Most active: <span className="text-kevin-text font-medium">{stats.mostActiveDay}</span>
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] sm:text-[11px]">🔥</span>
+          <span className="text-[9px] sm:text-[10px] text-kevin-text2">
+            <span className="text-kevin-text font-medium">{stats.activeDays}</span> active days
+          </span>
+        </div>
+      </motion.div>
 
       {/* Contribution Heatmap */}
       <motion.div
         className="rounded-xl border border-kevin-border/40 bg-[#0d1117] p-3 sm:p-4 overflow-hidden"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.6 }}
       >
-        <div className="mb-2 sm:mb-3">
-          <span className="text-xs sm:text-sm font-medium text-[#e6edf3]">
-            {stats.total} contributions in the last year
-          </span>
-        </div>
-
         <div className="w-full overflow-x-auto">
           <div className="min-w-[300px]">
             {/* Month labels */}
@@ -291,25 +348,28 @@ export default function ContributionStats() {
 
             <div className="flex w-full">
               {/* Day labels */}
-              <div className="flex flex-col gap-[2px] sm:gap-[3px] mr-1.5 sm:mr-2 justify-between h-[88px] sm:h-[110px]">
+              <div className="flex flex-col mr-1.5 sm:mr-2 justify-between h-[88px] sm:h-[110px]">
                 {DAY_LABELS.map((label, i) => (
-                  <div key={i} className="text-[8px] sm:text-[9px] text-[#8b949e] flex items-center h-[8px] sm:h-[10px]">
+                  <div key={i} className="text-[8px] sm:text-[9px] text-[#8b949e] flex items-center h-[10px] sm:h-[13px]">
                     {label}
                   </div>
                 ))}
               </div>
 
               {/* Heatmap grid */}
-              <div className="flex flex-1 gap-[2px] sm:gap-[3px]">
+              <div className="flex flex-1">
                 {heatmapWeeks.map((week, weekIdx) => (
-                  <div key={weekIdx} className="flex flex-col gap-[2px] sm:gap-[3px] flex-1 justify-between h-[88px] sm:h-[110px]">
+                  <div key={weekIdx} className="flex flex-col flex-1 justify-between h-[88px] sm:h-[110px]">
                     {week.map((day) => {
                       const isFuture = new Date(day.date + "T12:00:00") > new Date();
                       return (
-                        <div
+                        <motion.div
                           key={day.date}
-                          className={`w-full aspect-square max-w-[10px] sm:max-w-[13px] rounded-[2px] ${isFuture ? "bg-transparent" : getContributionLevel(day.count)} border border-[#1b1f23]`}
+                          className={`w-full aspect-square max-w-[10px] sm:max-w-[13px] ${isFuture ? "bg-transparent" : getContributionLevel(day.count)}`}
                           title={`${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.7 + weekIdx * 0.005 }}
                         />
                       );
                     })}
@@ -323,11 +383,11 @@ export default function ContributionStats() {
         {/* Legend */}
         <div className="flex items-center justify-end gap-1 mt-2 sm:mt-3">
           <span className="text-[8px] sm:text-[9px] text-[#8b949e]">Less</span>
-          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] rounded-[2px] bg-[#161b22] border border-[#1b1f23]" />
-          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] rounded-[2px] bg-[#0e4429] border border-[#1b1f23]" />
-          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] rounded-[2px] bg-[#006d32] border border-[#1b1f23]" />
-          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] rounded-[2px] bg-[#26a641] border border-[#1b1f23]" />
-          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] rounded-[2px] bg-[#39d353] border border-[#1b1f23]" />
+          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] bg-[#161b22]" />
+          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] bg-[#1a1a4e]" />
+          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] bg-[#2d2d8a]" />
+          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] bg-[#3b82f6]" />
+          <div className="w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] bg-[#60a5fa]" />
           <span className="text-[8px] sm:text-[9px] text-[#8b949e]">More</span>
         </div>
       </motion.div>

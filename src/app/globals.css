@@ -86,6 +86,10 @@ body {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.15), 0 0 40px rgba(139, 92, 246, 0.05);
 }
 
+.glow-text {
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.2);
+}
+
 .text-gradient {
   background: linear-gradient(135deg, var(--color-kevin-accent), var(--color-kevin-accent2));
   -webkit-background-clip: text;
