@@ -278,40 +278,40 @@ export default function ContributionStats() {
           </span>
         </div>
 
-        <div className="flex gap-0 overflow-x-auto pb-2">
-          {/* Day labels */}
-          <div className="flex flex-col gap-[3px] mr-2 mt-6">
-            {DAY_LABELS.map((label, i) => (
-              <div key={i} className="h-[10px] text-[9px] text-[#8b949e] flex items-center">
-                {label}
+        <div className="w-full">
+          {/* Month labels */}
+          <div className="relative mb-1 h-5 ml-[30px]">
+            {monthPositions.map((month, i) => (
+              <div
+                key={i}
+                className="text-[9px] text-[#8b949e] absolute"
+                style={{ left: `${(month.weekIndex / heatmapWeeks.length) * 100}%` }}
+              >
+                {month.label}
               </div>
             ))}
           </div>
 
-          <div className="flex-1">
-            {/* Month labels */}
-            <div className="relative mb-1 h-5">
-              {monthPositions.map((month, i) => (
-                <div
-                  key={i}
-                  className="text-[9px] text-[#8b949e] absolute"
-                  style={{ left: `${month.weekIndex * 13}px` }}
-                >
-                  {month.label}
+          <div className="flex w-full">
+            {/* Day labels */}
+            <div className="flex flex-col gap-[3px] mr-2 justify-between h-[110px]">
+              {DAY_LABELS.map((label, i) => (
+                <div key={i} className="text-[9px] text-[#8b949e] flex items-center h-[10px]">
+                  {label}
                 </div>
               ))}
             </div>
 
             {/* Heatmap grid */}
-            <div className="flex gap-[3px]">
+            <div className="flex flex-1 gap-[3px]">
               {heatmapWeeks.map((week, weekIdx) => (
-                <div key={weekIdx} className="flex flex-col gap-[3px]">
+                <div key={weekIdx} className="flex flex-col gap-[3px] flex-1 justify-between h-[110px]">
                   {week.map((day) => {
                     const isFuture = new Date(day.date + "T12:00:00") > new Date();
                     return (
                       <div
                         key={day.date}
-                        className={`w-[10px] h-[10px] rounded-[2px] ${isFuture ? "bg-transparent" : getContributionLevel(day.count)} border border-[#1b1f23]`}
+                        className={`w-full aspect-square max-w-[13px] rounded-[2px] ${isFuture ? "bg-transparent" : getContributionLevel(day.count)} border border-[#1b1f23]`}
                         title={`${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`}
                       />
                     );

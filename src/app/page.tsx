@@ -204,7 +204,7 @@ export default function HomePage() {
     () =>
       initialWindows.map((_, index) => ({
         x: isMobile ? 0 : 60 + (index % 3) * 250,
-        y: isMobile ? 0 : 40 + Math.floor(index / 3) * 220,
+        y: isMobile ? 0 : 40 + (index % 3) * 180,
       })),
     [isMobile]
   );

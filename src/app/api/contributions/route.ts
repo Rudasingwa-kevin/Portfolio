@@ -6,6 +6,8 @@ const GITHUB_GRAPHQL = "https://api.github.com/graphql";
 export async function GET() {
   const token = process.env.GITHUB_TOKEN;
   
+  console.log("Token loaded:", token ? "YES (length: " + token.length + ")" : "NO");
+  
   if (!token) {
     return NextResponse.json({ error: "GitHub token not configured" }, { status: 500 });
   }
