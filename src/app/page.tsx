@@ -148,7 +148,7 @@ export default function HomePage() {
   const handleDesktopIcon = useCallback(
     (id: WindowId | "cv") => {
       if (id === "cv") {
-        window.open("/Ishimwe_Kevin_CV.pdf", "_blank");
+        window.open("/KevinCV.pdf", "_blank");
         return;
       }
       const win = windows.find((w) => w.id === id);
