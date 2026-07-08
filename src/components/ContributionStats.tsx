@@ -3,39 +3,37 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Flame, TrendingUp, Calendar, RefreshCw } from "lucide-react";
-import { fetchGitHubEvents, GitHubEvent } from "@/lib/github";
 
-interface ContributionStats {
+interface ContributionDay {
+  date: string;
+  contributionCount: number;
+}
+
+interface ContributionWeek {
+  contributionDays: ContributionDay[];
+}
+
+interface ContributionCalendar {
+  totalContributions: number;
+  weeks: ContributionWeek[];
+}
+
+interface Stats {
   total: number;
   currentStreak: number;
   longestStreak: number;
   mostActiveDay: string;
-  mostActiveHour: number;
   contributionsByDay: Record<string, number>;
-  contributionsByHour: Record<number, number>;
 }
 
-function processEvents(events: GitHubEvent[]): ContributionStats {
-  const now = new Date();
-  const oneYearAgo = new Date(now);
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-
-  const recentEvents = events.filter(
-    (e) => new Date(e.created_at) >= oneYearAgo
-  );
-
+function processCalendar(calendar: ContributionCalendar): Stats {
   const contributionsByDay: Record<string, number> = {};
-  const contributionsByHour: Record<number, number> = {};
-  let total = 0;
+  let total = calendar.totalContributions;
 
-  for (const event of recentEvents) {
-    const date = new Date(event.created_at);
-    const dayKey = date.toISOString().split("T")[0];
-    const hour = date.getHours();
-
-    contributionsByDay[dayKey] = (contributionsByDay[dayKey] || 0) + 1;
-    contributionsByHour[hour] = (contributionsByHour[hour] || 0) + 1;
-    total++;
+  for (const week of calendar.weeks) {
+    for (const day of week.contributionDays) {
+      contributionsByDay[day.date] = day.contributionCount;
+    }
   }
 
   // Calculate streaks
@@ -44,6 +42,7 @@ function processEvents(events: GitHubEvent[]): ContributionStats {
   let longestStreak = 0;
   let tempStreak = 0;
 
+  const now = new Date();
   const today = now.toISOString().split("T")[0];
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
@@ -53,7 +52,7 @@ function processEvents(events: GitHubEvent[]): ContributionStats {
     const checkDate = contributionsByDay[today] ? new Date(now) : new Date(yesterday);
     let streakEnd = contributionsByDay[today] ? today : yesterdayKey;
     
-    while (contributionsByDay[streakEnd]) {
+    while (contributionsByDay[streakEnd] && contributionsByDay[streakEnd] > 0) {
       currentStreak++;
       checkDate.setDate(checkDate.getDate() - 1);
       streakEnd = checkDate.toISOString().split("T")[0];
@@ -61,33 +60,31 @@ function processEvents(events: GitHubEvent[]): ContributionStats {
   }
 
   for (const day of sortedDays) {
-    if (tempStreak === 0 || !contributionsByDay[day]) {
-      tempStreak = contributionsByDay[day] ? 1 : 0;
+    if (tempStreak === 0 || !contributionsByDay[day] || contributionsByDay[day] === 0) {
+      tempStreak = contributionsByDay[day] && contributionsByDay[day] > 0 ? 1 : 0;
     } else {
       tempStreak++;
     }
     longestStreak = Math.max(longestStreak, tempStreak);
   }
 
+  // Find most active day
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const dayTotals: Record<string, number> = {};
-  for (const event of recentEvents) {
-    const dayName = dayNames[new Date(event.created_at).getDay()];
-    dayTotals[dayName] = (dayTotals[dayName] || 0) + 1;
+  for (const day of sortedDays) {
+    if (contributionsByDay[day] > 0) {
+      const dayName = dayNames[new Date(day + "T12:00:00").getDay()];
+      dayTotals[dayName] = (dayTotals[dayName] || 0) + contributionsByDay[day];
+    }
   }
   const mostActiveDay = Object.entries(dayTotals).sort(([, a], [, b]) => b - a)[0]?.[0] || "N/A";
-
-  const mostActiveHour = Object.entries(contributionsByHour)
-    .sort(([, a], [, b]) => b - a)[0]?.[0] || "0";
 
   return {
     total,
     currentStreak,
     longestStreak,
     mostActiveDay,
-    mostActiveHour: parseInt(mostActiveHour),
     contributionsByDay,
-    contributionsByHour,
   };
 }
 
@@ -99,18 +96,11 @@ function getContributionLevel(count: number): string {
   return "bg-[#39d353]";
 }
 
-function formatHour(hour: number): string {
-  if (hour === 0) return "12 AM";
-  if (hour === 12) return "12 PM";
-  if (hour < 12) return `${hour} AM`;
-  return `${hour - 12} PM`;
-}
-
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
 
 export default function ContributionStats() {
-  const [events, setEvents] = useState<GitHubEvent[]>([]);
+  const [calendar, setCalendar] = useState<ContributionCalendar | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -118,10 +108,20 @@ export default function ContributionStats() {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchGitHubEvents();
-      setEvents(data);
-    } catch {
-      setError("Failed to load contribution data");
+      const res = await fetch("/api/contributions");
+      const data = await res.json();
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      
+      if (!data || !Array.isArray(data.weeks)) {
+        throw new Error("Invalid data format");
+      }
+      
+      setCalendar(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load contribution data");
     } finally {
       setLoading(false);
     }
@@ -131,44 +131,32 @@ export default function ContributionStats() {
     fetchData();
   }, []);
 
-  const stats = processEvents(events);
+  const stats = calendar ? processCalendar(calendar) : null;
 
-  // Generate full year heatmap (52 weeks + partial)
-  const now = new Date();
-  const startDate = new Date(now);
-  startDate.setDate(startDate.getDate() - 364);
-  
-  // Adjust to start on Sunday
-  const dayOfWeek = startDate.getDay();
-  startDate.setDate(startDate.getDate() - dayOfWeek);
-
-  const heatmapWeeks: string[][] = [];
-  let currentWeek: string[] = [];
-  
-  for (let i = 0; i < 371; i++) {
-    const date = new Date(startDate);
-    date.setDate(date.getDate() + i);
-    const dayKey = date.toISOString().split("T")[0];
-    currentWeek.push(dayKey);
-    
-    if (currentWeek.length === 7) {
-      heatmapWeeks.push(currentWeek);
-      currentWeek = [];
+  // Generate heatmap weeks from calendar data
+  const heatmapWeeks: { date: string; count: number }[][] = [];
+  if (calendar) {
+    for (const week of calendar.weeks) {
+      heatmapWeeks.push(
+        week.contributionDays.map((day) => ({
+          date: day.date,
+          count: day.contributionCount,
+        }))
+      );
     }
-  }
-  if (currentWeek.length > 0) {
-    heatmapWeeks.push(currentWeek);
   }
 
   // Calculate month positions
   const monthPositions: { label: string; weekIndex: number }[] = [];
   let lastMonth = -1;
   heatmapWeeks.forEach((week, idx) => {
-    const firstDay = new Date(week[0]);
-    const month = firstDay.getMonth();
-    if (month !== lastMonth) {
-      monthPositions.push({ label: MONTHS[month], weekIndex: idx });
-      lastMonth = month;
+    if (week.length > 0) {
+      const firstDay = new Date(week[0].date + "T12:00:00");
+      const month = firstDay.getMonth();
+      if (month !== lastMonth) {
+        monthPositions.push({ label: MONTHS[month], weekIndex: idx });
+        lastMonth = month;
+      }
     }
   });
 
@@ -188,10 +176,10 @@ export default function ContributionStats() {
     );
   }
 
-  if (error) {
+  if (error || !stats || !calendar) {
     return (
       <div className="text-center py-6">
-        <p className="text-kevin-text2 text-sm">{error}</p>
+        <p className="text-kevin-text2 text-sm">{error || "No data"}</p>
         <button
           onClick={fetchData}
           className="mt-3 text-kevin-accent text-xs hover:underline flex items-center gap-1 mx-auto"
@@ -284,12 +272,9 @@ export default function ContributionStats() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
       >
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3">
           <span className="text-sm font-medium text-[#e6edf3]">
             {stats.total} contributions in the last year
-          </span>
-          <span className="text-xs text-[#8b949e]">
-            {formatHour(stats.mostActiveHour)} is peak hour
           </span>
         </div>
 
@@ -305,7 +290,7 @@ export default function ContributionStats() {
 
           <div className="flex-1">
             {/* Month labels */}
-            <div className="flex mb-1 h-5">
+            <div className="relative mb-1 h-5">
               {monthPositions.map((month, i) => (
                 <div
                   key={i}
@@ -322,13 +307,12 @@ export default function ContributionStats() {
               {heatmapWeeks.map((week, weekIdx) => (
                 <div key={weekIdx} className="flex flex-col gap-[3px]">
                   {week.map((day) => {
-                    const count = stats.contributionsByDay[day] || 0;
-                    const isFuture = new Date(day) > new Date();
+                    const isFuture = new Date(day.date + "T12:00:00") > new Date();
                     return (
                       <div
-                        key={day}
-                        className={`w-[10px] h-[10px] rounded-[2px] ${isFuture ? "bg-transparent" : getContributionLevel(count)} border border-[#1b1f23]`}
-                        title={`${day}: ${count} contribution${count !== 1 ? 's' : ''}`}
+                        key={day.date}
+                        className={`w-[10px] h-[10px] rounded-[2px] ${isFuture ? "bg-transparent" : getContributionLevel(day.count)} border border-[#1b1f23]`}
+                        title={`${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`}
                       />
                     );
                   })}

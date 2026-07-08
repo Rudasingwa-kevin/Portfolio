@@ -1,5 +1,6 @@
 const GITHUB_USERNAME = "Rudasingwa-kevin";
 const GITHUB_API = "https://api.github.com";
+const GITHUB_GRAPHQL = "https://api.github.com/graphql";
 
 export interface GitHubUser {
   login: string;
@@ -46,6 +47,24 @@ export interface LanguageStats {
   [language: string]: number;
 }
 
+export interface ContributionDay {
+  date: string;
+  contributionCount: number;
+}
+
+export interface ContributionWeek {
+  contributionDays: ContributionDay[];
+}
+
+export interface ContributionCalendar {
+  totalContributions: number;
+  weeks: ContributionWeek[];
+}
+
+export interface ContributionData {
+  contributionCalendar: ContributionCalendar;
+}
+
 const headers: HeadersInit = {
   Accept: "application/vnd.github.v3+json",
 };
@@ -66,6 +85,45 @@ export async function fetchGitHubEvents(): Promise<GitHubEvent[]> {
   const res = await fetch(`${GITHUB_API}/users/${GITHUB_USERNAME}/events?per_page=30`, { headers });
   if (!res.ok) throw new Error("Failed to fetch GitHub events");
   return res.json();
+}
+
+export async function fetchGitHubContributions(token: string): Promise<ContributionData> {
+  const query = `
+    query($username: String!) {
+      user(login: $username) {
+        contributionsCollection {
+          contributionCalendar {
+            totalContributions
+            weeks {
+              contributionDays {
+                contributionCount
+                date
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const res = await fetch(GITHUB_GRAPHQL, {
+    method: "POST",
+    headers: {
+      Authorization: `bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query,
+      variables: { username: GITHUB_USERNAME },
+    }),
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch GitHub contributions");
+  
+  const data = await res.json();
+  if (data.errors) throw new Error("GraphQL error fetching contributions");
+  
+  return data.data.user.contributionsCollection;
 }
 
 export async function fetchLanguageStats(): Promise<LanguageStats> {
