@@ -23,7 +23,8 @@ Available commands:
   projects   - Open Projects window
   skills     - Open Skills window
   contact    - Open Contact window
-  github     - Open GitHub profile
+  github     - Open GitHub stats window
+  github-profile - Open GitHub profile
   resume     - Download CV
   achievements - Show achievements
   clear      - Clear terminal
@@ -41,8 +42,12 @@ Available commands:
   contact: { output: "Opening Contact window...", action: "contact" },
   achievements: { output: "Opening Achievements window...", action: "achievements" },
   github: {
-    output: "Opening GitHub profile...",
+    output: "Opening GitHub stats window...",
     action: "github",
+  },
+  "github-profile": {
+    output: "Opening GitHub profile...",
+    action: "github-profile",
   },
   resume: {
     output: "Preparing CV download...",
@@ -109,7 +114,7 @@ export default function TerminalWindow({
           newHistory.push(command.output);
         }
 
-        if (command.action === "github") {
+        if (command.action === "github-profile") {
           window.open("https://github.com/Rudasingwa-kevin", "_blank");
         } else if (command.action === "resume") {
           window.open("/KevinCV.pdf", "_blank");

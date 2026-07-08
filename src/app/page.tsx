@@ -10,6 +10,7 @@ import {
   Trophy,
   Mail,
   FileDown,
+  GitBranch,
 } from "lucide-react";
 import BootScreen from "@/components/BootScreen";
 import Window from "@/components/Window";
@@ -22,6 +23,10 @@ import AchievementsWindow from "@/components/AchievementsWindow";
 import ContactWindow from "@/components/ContactWindow";
 import DesktopWidget from "@/components/DesktopWidget";
 import ParticleBackground from "@/components/ParticleBackground";
+import GitHubStats from "@/components/GitHubStats";
+import LanguageStats from "@/components/LanguageStats";
+import RecentActivity from "@/components/RecentActivity";
+import ContributionStats from "@/components/ContributionStats";
 
 type WindowId =
   | "about"
@@ -29,7 +34,8 @@ type WindowId =
   | "skills"
   | "terminal"
   | "achievements"
-  | "contact";
+  | "contact"
+  | "github";
 
 interface WindowState {
   id: WindowId;
@@ -47,6 +53,7 @@ const initialWindows: WindowState[] = [
   { id: "terminal", isOpen: false, isMinimized: false, zIndex: 13, icon: <Terminal size={18} />, title: "Terminal" },
   { id: "achievements", isOpen: false, isMinimized: false, zIndex: 14, icon: <Trophy size={18} />, title: "Achievements" },
   { id: "contact", isOpen: false, isMinimized: false, zIndex: 15, icon: <Mail size={18} />, title: "Contact" },
+  { id: "github", isOpen: false, isMinimized: false, zIndex: 16, icon: <GitBranch size={18} />, title: "GitHub" },
 ];
 
 const desktopIcons: { id: WindowId | "cv"; icon: React.ReactNode; label: string }[] = [
@@ -56,6 +63,7 @@ const desktopIcons: { id: WindowId | "cv"; icon: React.ReactNode; label: string 
   { id: "terminal", icon: <Terminal size={26} />, label: "Terminal" },
   { id: "achievements", icon: <Trophy size={26} />, label: "Achievements" },
   { id: "contact", icon: <Mail size={26} />, label: "Contact" },
+  { id: "github", icon: <GitBranch size={26} />, label: "GitHub" },
   { id: "cv", icon: <FileDown size={26} />, label: "Download CV" },
 ];
 
@@ -165,9 +173,9 @@ export default function HomePage() {
     (section: string) => {
       if (section === "exit") {
         closeWindow("terminal");
-      } else if (section === "about" || section === "projects" || section === "skills" || section === "contact" || section === "achievements") {
+      } else if (section === "about" || section === "projects" || section === "skills" || section === "contact" || section === "achievements" || section === "github") {
         openWindow(section as WindowId);
-      } else if (section === "github") {
+      } else if (section === "github-profile") {
         window.open("https://github.com/Rudasingwa-kevin", "_blank");
       }
     },
@@ -382,6 +390,14 @@ export default function HomePage() {
                 )}
                 {win.id === "achievements" && <AchievementsWindow />}
                 {win.id === "contact" && <ContactWindow />}
+                {win.id === "github" && (
+                  <div className="space-y-6 p-1">
+                    <GitHubStats />
+                    <ContributionStats />
+                    <LanguageStats />
+                    <RecentActivity />
+                  </div>
+                )}
               </Window>
             ))}
           </AnimatePresence>
