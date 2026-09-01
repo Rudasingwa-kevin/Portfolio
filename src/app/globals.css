@@ -116,32 +116,38 @@ body {
   height: 14px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.06);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-  color: transparent;
 }
 
-.window-control-btn:hover {
-  color: rgba(0, 0, 0, 0.7);
+.control-close {
+  background: rgba(239, 68, 68, 0.7);
+}
+
+.control-minimize {
+  background: rgba(234, 179, 8, 0.7);
+}
+
+.control-maximize {
+  background: rgba(34, 197, 94, 0.7);
 }
 
 .control-close:hover {
   background: #ef4444;
-  box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
 }
 
 .control-minimize:hover {
   background: #eab308;
-  box-shadow: 0 0 8px rgba(234, 179, 8, 0.3);
+  box-shadow: 0 0 8px rgba(234, 179, 8, 0.4);
 }
 
 .control-maximize:hover {
   background: #22c55e;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
 }
 
 .window-content-area {
