@@ -47,13 +47,13 @@ interface WindowState {
 }
 
 const initialWindows: WindowState[] = [
-  { id: "about", isOpen: false, isMinimized: false, zIndex: 10, icon: <User size={18} />, title: "About Me" },
-  { id: "projects", isOpen: false, isMinimized: false, zIndex: 11, icon: <FolderOpen size={18} />, title: "Projects" },
-  { id: "skills", isOpen: false, isMinimized: false, zIndex: 12, icon: <Puzzle size={18} />, title: "Skills" },
-  { id: "terminal", isOpen: false, isMinimized: false, zIndex: 13, icon: <Terminal size={18} />, title: "Terminal" },
-  { id: "achievements", isOpen: false, isMinimized: false, zIndex: 14, icon: <Trophy size={18} />, title: "Achievements" },
-  { id: "contact", isOpen: false, isMinimized: false, zIndex: 15, icon: <Mail size={18} />, title: "Contact" },
-  { id: "github", isOpen: false, isMinimized: false, zIndex: 16, icon: <GitBranch size={18} />, title: "GitHub" },
+  { id: "about", isOpen: false, isMinimized: false, zIndex: 10, icon: <User size={14} />, title: "About Me" },
+  { id: "projects", isOpen: false, isMinimized: false, zIndex: 11, icon: <FolderOpen size={14} />, title: "Projects" },
+  { id: "skills", isOpen: false, isMinimized: false, zIndex: 12, icon: <Puzzle size={14} />, title: "Skills" },
+  { id: "terminal", isOpen: false, isMinimized: false, zIndex: 13, icon: <Terminal size={14} />, title: "Terminal" },
+  { id: "achievements", isOpen: false, isMinimized: false, zIndex: 14, icon: <Trophy size={14} />, title: "Achievements" },
+  { id: "contact", isOpen: false, isMinimized: false, zIndex: 15, icon: <Mail size={14} />, title: "Contact" },
+  { id: "github", isOpen: false, isMinimized: false, zIndex: 16, icon: <GitBranch size={14} />, title: "GitHub" },
 ];
 
 const desktopIcons: { id: WindowId | "cv"; icon: React.ReactNode; label: string }[] = [
@@ -226,14 +226,14 @@ export default function HomePage() {
           <div
             className="absolute inset-0"
             style={{
-              background: "radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 50%), #0a0a0f",
+              background: "radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.04) 0%, transparent 50%), #08080e",
             }}
           />
           {/* Grid pattern overlay */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              backgroundImage: "radial-gradient(circle, rgba(59,130,246,0.07) 1px, transparent 1px)",
+              backgroundImage: "radial-gradient(circle, rgba(59,130,246,0.05) 1px, transparent 1px)",
               backgroundSize: "32px 32px",
             }}
           />
@@ -241,28 +241,31 @@ export default function HomePage() {
           <div
             className="absolute top-0 left-0 w-96 h-96 pointer-events-none"
             style={{
-              background: "radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)",
             }}
           />
           <div
             className="absolute bottom-12 right-0 w-80 h-80 pointer-events-none"
             style={{
-              background: "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)",
             }}
           />
 
           {/* Taskbar */}
-          <div
-            className="absolute bottom-0 left-0 right-0 h-14 flex items-center px-3 sm:px-5 gap-3 z-[50] border-t bg-kevin-glass border-kevin-border"
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 h-14 flex items-center px-3 sm:px-5 gap-3 z-[50] border-t bg-kevin-glass border-kevin-border/50"
             style={{ backdropFilter: "blur(24px)" }}
+            initial={{ y: 56 }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.3, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             {/* Left: KevinOS logo */}
             <motion.button
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-white/5 transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-white/[0.04] transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-kevin-accent to-kevin-accent2 flex items-center justify-center text-white text-xs font-bold">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-kevin-accent to-kevin-accent2 flex items-center justify-center text-white text-xs font-bold shadow-sm shadow-kevin-accent/20">
                 K
               </div>
               <span className="text-xs font-bold text-kevin-accent font-mono hidden sm:inline">
@@ -272,9 +275,9 @@ export default function HomePage() {
 
             {/* Separator */}
             <div
-              className="w-px h-6 hidden sm:block"
+              className="w-px h-5 hidden sm:block"
               style={{
-                background: "rgba(59,130,246,0.2)",
+                background: "rgba(59,130,246,0.15)",
               }}
             />
 
@@ -287,8 +290,8 @@ export default function HomePage() {
                     key={w.id}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all ${
                       !w.isMinimized
-                        ? "bg-kevin-accent/15 border border-kevin-accent/30 text-kevin-accent shadow-[0_0_10px_rgba(59,130,246,0.1)]"
-                        : "bg-kevin-card/50 border border-kevin-border text-kevin-text2 hover:border-kevin-accent/50 hover:text-kevin-accent"
+                        ? "bg-kevin-accent/12 border border-kevin-accent/25 text-kevin-accent shadow-[0_0_8px_rgba(59,130,246,0.08)]"
+                        : "bg-kevin-card/40 border border-kevin-border/50 text-kevin-text2 hover:border-kevin-accent/40 hover:text-kevin-accent"
                     }`}
                     onClick={() => {
                       if (w.isMinimized) {
@@ -301,12 +304,12 @@ export default function HomePage() {
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ y: -1 }}
                   >
-                    <span className="flex items-center justify-center text-sm">{w.icon}</span>
+                    <span className="flex items-center justify-center">{w.icon}</span>
                     <span className="hidden sm:inline font-medium">{w.title}</span>
                   </motion.button>
                 ))}
               {windows.filter((w) => w.isOpen).length === 0 && (
-                <span className="text-[11px] font-mono text-kevin-text2/30">
+                <span className="text-[11px] font-mono text-kevin-text2/25">
                   Click an icon to open an application
                 </span>
               )}
@@ -314,9 +317,9 @@ export default function HomePage() {
 
             {/* Separator */}
             <div
-              className="w-px h-6 hidden sm:block"
+              className="w-px h-5 hidden sm:block"
               style={{
-                background: "rgba(59,130,246,0.2)",
+                background: "rgba(59,130,246,0.15)",
               }}
             />
 
@@ -340,7 +343,7 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Particle Background */}
           <ParticleBackground />

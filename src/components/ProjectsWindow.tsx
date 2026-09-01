@@ -57,7 +57,7 @@ export default function ProjectsWindow() {
 
   if (loading) {
     return (
-      <div className="space-y-5">
+      <div className="space-y-4">
         <motion.div
           className="flex items-center gap-2.5"
           initial={{ opacity: 0, y: -8 }}
@@ -73,7 +73,7 @@ export default function ProjectsWindow() {
         </motion.div>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 rounded-2xl bg-kevin-card/30 border border-kevin-border/30 animate-pulse" />
+            <div key={i} className="h-28 sm:h-32 rounded-2xl bg-kevin-card/20 border border-kevin-border/30 animate-shimmer" />
           ))}
         </div>
       </div>
@@ -95,7 +95,7 @@ export default function ProjectsWindow() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <motion.div
         className="flex items-center gap-2.5"
         initial={{ opacity: 0, y: -8 }}
@@ -110,40 +110,40 @@ export default function ProjectsWindow() {
         </h2>
       </motion.div>
 
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {repos.map((repo, i) => (
           <motion.div
             key={repo.id}
-            className="rounded-2xl border border-kevin-border/40 bg-kevin-card/30 overflow-hidden hover:border-kevin-accent/30 transition-all duration-300"
+            className="rounded-2xl border border-kevin-border/40 bg-kevin-card/20 overflow-hidden hover:border-kevin-accent/25 transition-all duration-300"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
           >
             <div className={`h-1 bg-gradient-to-r ${repo.language === "TypeScript" ? "from-blue-500 to-cyan-500" : repo.language === "JavaScript" ? "from-yellow-400 to-orange-500" : repo.language === "Python" ? "from-green-500 to-emerald-500" : "from-gray-500 to-gray-400"}`} />
-            <div className="p-4">
+            <div className="p-3.5 sm:p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-kevin-card border border-kevin-border/40 flex items-center justify-center shadow-sm">
-                    <span className="text-[10px] font-bold text-kevin-accent font-mono">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-kevin-card border border-kevin-border/40 flex items-center justify-center">
+                    <span className="text-[9px] sm:text-[10px] font-bold text-kevin-accent font-mono">
                       {repo.language ? LANGUAGE_ICONS[repo.language] || "Code" : "Code"}
                     </span>
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-[14px] font-bold text-kevin-text">{repo.name}</h3>
+                      <h3 className="text-[13px] sm:text-[14px] font-bold text-kevin-text">{repo.name}</h3>
                       {FEATURED_REPOS.includes(repo.name) && (
-                        <span className="text-[9px] font-mono text-kevin-accent bg-kevin-accent/10 px-1.5 py-0.5 rounded-md font-bold">
+                        <span className="text-[8px] sm:text-[9px] font-mono text-kevin-accent bg-kevin-accent/10 px-1.5 py-0.5 rounded-md font-bold">
                           FEATURED
                         </span>
                       )}
                     </div>
-                    <p className="text-[12px] text-kevin-text2 mt-0.5">
+                    <p className="text-[11px] sm:text-[12px] text-kevin-text2 mt-0.5">
                       {repo.description || "No description"}
                     </p>
                   </div>
                 </div>
                 <button
-                  className="text-[11px] px-3 py-1.5 rounded-lg border border-kevin-border/50 text-kevin-text2 hover:border-kevin-accent/40 hover:text-kevin-accent hover:bg-kevin-accent/5 transition-all duration-200 flex-shrink-0 font-medium"
+                  className="text-[10px] sm:text-[11px] px-2.5 sm:px-3 py-1.5 rounded-lg border border-kevin-border/40 text-kevin-text2 hover:border-kevin-accent/30 hover:text-kevin-accent hover:bg-kevin-accent/[0.04] transition-all duration-200 flex-shrink-0 font-medium"
                   onClick={() =>
                     setExpandedProject(
                       expandedProject === repo.name ? null : repo.name
@@ -163,21 +163,21 @@ export default function ProjectsWindow() {
                 >
                   <div className="flex flex-wrap gap-2">
                     {repo.language && (
-                      <span className="text-[10px] px-2.5 py-1 rounded-lg bg-kevin-accent/8 text-kevin-accent border border-kevin-accent/15 font-mono font-medium">
+                      <span className="text-[9px] sm:text-[10px] px-2.5 py-1 rounded-lg bg-kevin-accent/[0.06] text-kevin-accent border border-kevin-accent/10 font-mono font-medium">
                         {repo.language}
                       </span>
                     )}
                     {repo.topics.slice(0, 5).map((topic) => (
                       <span
                         key={topic}
-                        className="text-[10px] px-2.5 py-1 rounded-lg bg-purple-500/8 text-purple-400 border border-purple-500/15 font-mono font-medium"
+                        className="text-[9px] sm:text-[10px] px-2.5 py-1 rounded-lg bg-purple-500/[0.06] text-purple-400 border border-purple-500/10 font-mono font-medium"
                       >
                         {topic}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-4 text-[11px] text-kevin-text2">
+                  <div className="flex items-center gap-4 text-[10px] sm:text-[11px] text-kevin-text2">
                     <div className="flex items-center gap-1">
                       <Star className="w-3 h-3 text-yellow-400" />
                       <span>{repo.stargazers_count} stars</span>
@@ -194,7 +194,7 @@ export default function ProjectsWindow() {
                         href={repo.homepage}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-[12px] px-4 py-2 rounded-xl bg-kevin-accent text-white hover:bg-kevin-accent/85 transition-all duration-200 font-medium shadow-sm shadow-kevin-accent/20"
+                        className="inline-flex items-center gap-1.5 text-[11px] sm:text-[12px] px-3.5 sm:px-4 py-2 rounded-xl bg-kevin-accent text-white hover:bg-kevin-accent/85 transition-all duration-200 font-medium shadow-sm shadow-kevin-accent/15"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                         Live Demo
@@ -204,7 +204,7 @@ export default function ProjectsWindow() {
                       href={repo.html_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-[12px] px-4 py-2 rounded-xl border border-kevin-border/50 text-kevin-text hover:border-kevin-accent/40 hover:text-kevin-accent hover:bg-kevin-accent/5 transition-all duration-200 font-medium"
+                      className="inline-flex items-center gap-1.5 text-[11px] sm:text-[12px] px-3.5 sm:px-4 py-2 rounded-xl border border-kevin-border/40 text-kevin-text hover:border-kevin-accent/30 hover:text-kevin-accent hover:bg-kevin-accent/[0.04] transition-all duration-200 font-medium"
                     >
                       <GitBranch className="w-3.5 h-3.5" />
                       GitHub

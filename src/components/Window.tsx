@@ -90,10 +90,10 @@ export default function Window({
         top: isMaximized ? 0 : position.y,
         left: isMaximized ? 0 : position.x,
       }}
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.92 }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, scale: 0.94, filter: "blur(4px)" }}
+      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+      exit={{ opacity: 0, scale: 0.94, filter: "blur(4px)" }}
+      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
       onMouseDown={onFocus}
       onClick={onFocus}
     >
@@ -147,49 +147,37 @@ export default function Window({
             window.addEventListener("touchend", onEnd);
           }}
         >
-          <div className="flex items-center gap-2.5 flex-1 min-w-0">
-            <div className="flex items-center justify-center w-6 h-6 rounded-md bg-kevin-accent/10 text-kevin-accent flex-shrink-0">
-              {icon}
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="flex items-center gap-[7px] pl-1">
+              <button
+                className="window-control-btn control-close"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+                aria-label="Close"
+              />
+              <button
+                className="window-control-btn control-minimize"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMinimize();
+                }}
+                aria-label="Minimize"
+              />
+              <button
+                className="window-control-btn control-maximize"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleMaximize();
+                }}
+                aria-label="Maximize"
+              />
             </div>
-            <span className="text-[13px] font-semibold text-kevin-text truncate">{title}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              className="window-control-btn control-close"
-              onClick={(e) => {
-                e.stopPropagation();
-                onClose();
-              }}
-              aria-label="Close"
-            >
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                <path d="M1 1L7 7M7 1L1 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </button>
-            <button
-              className="window-control-btn control-minimize"
-              onClick={(e) => {
-                e.stopPropagation();
-                onMinimize();
-              }}
-              aria-label="Minimize"
-            >
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                <path d="M1 4H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </button>
-            <button
-              className="window-control-btn control-maximize"
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleMaximize();
-              }}
-              aria-label="Maximize"
-            >
-              <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.2" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-2 ml-2 min-w-0">
+              <span className="text-kevin-accent flex-shrink-0">{icon}</span>
+              <span className="text-[12px] font-medium text-kevin-text2 truncate">{title}</span>
+            </div>
           </div>
         </div>
 

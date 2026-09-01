@@ -58,16 +58,16 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: "#0a0a0f" }}
+      style={{ background: "#08080e" }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
     >
       <div className="w-full max-w-2xl px-6">
         <div className="glass-panel p-8 glow-blue">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-3 h-3 rounded-full bg-red-500" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500" />
-            <div className="w-3 h-3 rounded-full bg-green-500" />
+            <div className="w-3 h-3 rounded-full bg-[#ff5f57] shadow-sm shadow-[#ff5f57]/30" />
+            <div className="w-3 h-3 rounded-full bg-[#febc2e] shadow-sm shadow-[#febc2e]/30" />
+            <div className="w-3 h-3 rounded-full bg-[#28c840] shadow-sm shadow-[#28c840]/30" />
             <span className="ml-4 text-kevin-text2 text-sm font-mono">
               kevinos-boot
             </span>
@@ -79,7 +79,7 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
                 key={index}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
                 className={
                   index === bootLines.length - 1 || index === bootLines.length - 2
                     ? "text-kevin-accent font-bold text-base"
@@ -90,7 +90,7 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
               >
                 {line.text}
                 {index === visibleLines - 1 && index < bootLines.length - 1 && (
-                  <span className="cursor-blink inline-block w-2 h-4 bg-kevin-accent ml-1 align-middle" />
+                  <span className="cursor-blink inline-block w-2 h-4 bg-kevin-accent ml-1 align-middle rounded-sm" />
                 )}
               </motion.div>
             ))}
@@ -101,7 +101,7 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
               <span>System Boot</span>
               <span>{progress}%</span>
             </div>
-            <div className="w-full h-1.5 bg-kevin-border rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-kevin-border/60 rounded-full overflow-hidden">
               <motion.div
                 className="h-full rounded-full"
                 style={{

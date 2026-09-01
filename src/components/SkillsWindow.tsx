@@ -49,7 +49,7 @@ const engines = [
 
 export default function SkillsWindow() {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <motion.div
         className="flex items-center gap-2.5"
         initial={{ opacity: 0, y: -8 }}
@@ -68,33 +68,33 @@ export default function SkillsWindow() {
         {engines.map((engine, i) => (
           <motion.div
             key={engine.name}
-            className="rounded-2xl border border-kevin-border/40 bg-kevin-card/30 overflow-hidden hover:border-kevin-accent/20 transition-all duration-300"
+            className="rounded-2xl border border-kevin-border/40 bg-kevin-card/20 overflow-hidden hover:border-kevin-accent/15 transition-all duration-300"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.1, duration: 0.4 }}
           >
-            <div className="px-4 py-3 border-b border-kevin-border/30 bg-kevin-accent/5 flex items-center justify-between">
+            <div className="px-4 py-3 border-b border-kevin-border/30 bg-kevin-accent/[0.04] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-kevin-card/60 border border-kevin-border/40 flex items-center justify-center shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-kevin-card/60 border border-kevin-border/40 flex items-center justify-center">
                   <engine.icon className="w-4 h-4 text-kevin-accent" />
                 </div>
-                <h3 className="text-[13px] font-bold text-kevin-text">{engine.name}</h3>
+                <h3 className="text-[12px] sm:text-[13px] font-bold text-kevin-text">{engine.name}</h3>
               </div>
               <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${engine.color} border-current/15 bg-current/5`}>
-                ● active
+                active
               </span>
             </div>
 
             <div className="p-4 space-y-3">
               {engine.skills.map((skill, j) => (
                 <div key={skill.name}>
-                  <div className="flex justify-between text-[12px] mb-1.5">
+                  <div className="flex justify-between text-[11px] sm:text-[12px] mb-1.5">
                     <span className="text-kevin-text font-medium">
                       {skill.name}
                     </span>
-                    <span className="text-kevin-text2 font-mono text-[11px]">{skill.level}%</span>
+                    <span className="text-kevin-text2 font-mono text-[10px] sm:text-[11px]">{skill.level}%</span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-kevin-border/40 overflow-hidden">
+                  <div className="w-full h-1.5 sm:h-2 rounded-full bg-kevin-border/30 overflow-hidden">
                     <motion.div
                       className={`h-full rounded-full bg-gradient-to-r ${engine.barFrom} ${engine.barTo}`}
                       initial={{ width: 0 }}

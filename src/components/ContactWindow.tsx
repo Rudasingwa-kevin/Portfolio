@@ -26,7 +26,7 @@ export default function ContactWindow() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <motion.div
         className="flex items-center gap-2.5"
         initial={{ opacity: 0, y: -8 }}
@@ -73,17 +73,17 @@ export default function ContactWindow() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-2 p-4 rounded-2xl border border-kevin-border/40 bg-kevin-card/30 hover:border-kevin-accent/30 hover:bg-kevin-accent/5 transition-all duration-200 group text-center"
+            className="flex flex-col items-center gap-2 p-3.5 sm:p-4 rounded-2xl border border-kevin-border/40 bg-kevin-card/20 hover:border-kevin-accent/25 hover:bg-kevin-accent/[0.04] transition-all duration-200 group text-center"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 + i * 0.05, duration: 0.3 }}
           >
-            <div className="w-10 h-10 rounded-xl bg-kevin-card/60 border border-kevin-border/40 flex items-center justify-center shadow-sm group-hover:border-kevin-accent/30 transition-colors">
-              <link.icon className="w-5 h-5 text-kevin-text2 group-hover:text-kevin-accent transition-colors" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-kevin-card/60 border border-kevin-border/40 flex items-center justify-center group-hover:border-kevin-accent/25 transition-colors">
+              <link.icon className="w-4 h-4 sm:w-5 sm:h-5 text-kevin-text2 group-hover:text-kevin-accent transition-colors" />
             </div>
             <div>
-              <span className="text-[12px] font-bold text-kevin-text block">{link.label}</span>
-              <span className="text-[10px] text-kevin-text2 group-hover:text-kevin-accent transition-colors">
+              <span className="text-[11px] sm:text-[12px] font-bold text-kevin-text block">{link.label}</span>
+              <span className="text-[9px] sm:text-[10px] text-kevin-text2 group-hover:text-kevin-accent transition-colors">
                 {link.value}
               </span>
             </div>
@@ -93,12 +93,12 @@ export default function ContactWindow() {
 
       {/* Contact Form */}
       <motion.div
-        className="rounded-2xl border border-kevin-border/40 bg-kevin-card/30 overflow-hidden"
+        className="rounded-2xl border border-kevin-border/40 bg-kevin-card/20 overflow-hidden"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
       >
-        <div className="px-4 py-3 border-b border-kevin-border/30 bg-kevin-accent/5">
+        <div className="px-4 py-3 border-b border-kevin-border/30 bg-kevin-accent/[0.04]">
           <h3 className="text-[11px] font-bold text-kevin-accent font-mono tracking-wider">
             // COMPOSE MESSAGE
           </h3>
@@ -106,7 +106,7 @@ export default function ContactWindow() {
         <form onSubmit={handleSubmit} className="p-4 space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="text-[11px] text-kevin-text2 font-mono mb-1.5 block">
+              <label className="text-[10px] sm:text-[11px] text-kevin-text2 font-mono mb-1.5 block">
                 &gt; name:
               </label>
               <input
@@ -115,13 +115,13 @@ export default function ContactWindow() {
                 onChange={(e) =>
                   setFormState((s) => ({ ...s, name: e.target.value }))
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl border text-[13px] font-mono outline-none transition-all duration-200 bg-kevin-bg/50 border-kevin-border/40 text-kevin-text focus:border-kevin-accent/50 focus:bg-kevin-bg/80"
+                className="w-full px-3 py-2.5 rounded-xl border text-[12px] sm:text-[13px] font-mono outline-none transition-all duration-200 bg-kevin-bg/50 border-kevin-border/30 text-kevin-text focus:border-kevin-accent/40 focus:bg-kevin-bg/80"
                 placeholder="Your name"
                 required
               />
             </div>
             <div>
-              <label className="text-[11px] text-kevin-text2 font-mono mb-1.5 block">
+              <label className="text-[10px] sm:text-[11px] text-kevin-text2 font-mono mb-1.5 block">
                 &gt; email:
               </label>
               <input
@@ -130,7 +130,7 @@ export default function ContactWindow() {
                 onChange={(e) =>
                   setFormState((s) => ({ ...s, email: e.target.value }))
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl border text-[13px] font-mono outline-none transition-all duration-200 bg-kevin-bg/50 border-kevin-border/40 text-kevin-text focus:border-kevin-accent/50 focus:bg-kevin-bg/80"
+                className="w-full px-3 py-2.5 rounded-xl border text-[12px] sm:text-[13px] font-mono outline-none transition-all duration-200 bg-kevin-bg/50 border-kevin-border/30 text-kevin-text focus:border-kevin-accent/40 focus:bg-kevin-bg/80"
                 placeholder="your@email.com"
                 required
               />
@@ -138,7 +138,7 @@ export default function ContactWindow() {
           </div>
 
           <div>
-            <label className="text-[11px] text-kevin-text2 font-mono mb-1.5 block">
+            <label className="text-[10px] sm:text-[11px] text-kevin-text2 font-mono mb-1.5 block">
               &gt; message:
             </label>
             <textarea
@@ -147,7 +147,7 @@ export default function ContactWindow() {
                 setFormState((s) => ({ ...s, message: e.target.value }))
               }
               rows={4}
-              className="w-full px-3.5 py-2.5 rounded-xl border text-[13px] font-mono outline-none resize-none transition-all duration-200 bg-kevin-bg/50 border-kevin-border/40 text-kevin-text focus:border-kevin-accent/50 focus:bg-kevin-bg/80"
+              className="w-full px-3 py-2.5 rounded-xl border text-[12px] sm:text-[13px] font-mono outline-none resize-none transition-all duration-200 bg-kevin-bg/50 border-kevin-border/30 text-kevin-text focus:border-kevin-accent/40 focus:bg-kevin-bg/80"
               placeholder="Type your message here..."
               required
             />
@@ -155,10 +155,10 @@ export default function ContactWindow() {
 
           <motion.button
             type="submit"
-            className={`w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl font-mono text-[13px] font-bold transition-all duration-300 ${
+            className={`w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl font-mono text-[12px] sm:text-[13px] font-bold transition-all duration-300 ${
               sent
                 ? "bg-kevin-success text-white shadow-lg shadow-kevin-success/20"
-                : "bg-kevin-accent text-white hover:bg-kevin-accent/85 shadow-sm shadow-kevin-accent/20 hover:shadow-md hover:shadow-kevin-accent/25"
+                : "bg-kevin-accent text-white hover:bg-kevin-accent/85 shadow-sm shadow-kevin-accent/15 hover:shadow-md hover:shadow-kevin-accent/20"
             }`}
             whileTap={{ scale: 0.98 }}
           >
