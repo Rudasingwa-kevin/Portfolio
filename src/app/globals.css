@@ -112,8 +112,8 @@ body {
 }
 
 .window-control-btn {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -121,6 +121,13 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 768px) {
+  .window-control-btn {
+    width: 22px;
+    height: 22px;
+  }
 }
 
 .control-close {
