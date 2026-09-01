@@ -291,13 +291,13 @@ export default function HomePage() {
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all ${
                       !w.isMinimized
                         ? "bg-kevin-accent/12 border border-kevin-accent/25 text-kevin-accent shadow-[0_0_8px_rgba(59,130,246,0.08)]"
-                        : "bg-kevin-card/40 border border-kevin-border/50 text-kevin-text2 hover:border-kevin-accent/40 hover:text-kevin-accent"
+                        : "bg-kevin-card/60 border border-kevin-border/60 text-kevin-text2/80 active:border-kevin-accent/40 active:text-kevin-accent"
                     }`}
                     onClick={() => {
                       if (w.isMinimized) {
                         openWindow(w.id);
-                      } else {
-                        focusWindow(w.id);
+                      } else if (w.isOpen) {
+                        minimizeWindow(w.id);
                       }
                     }}
                     initial={{ opacity: 0, y: 10 }}
